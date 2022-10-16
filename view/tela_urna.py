@@ -1,0 +1,2 @@
+class TelaUrna():
+  pass
