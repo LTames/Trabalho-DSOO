@@ -3,20 +3,19 @@ from abstracts.abstract_tela import AbstractTela
 
 class TelaCandidato(AbstractTela):
     def exibe_opcoes(self) -> int:
-        print(f'{"=" * 8} Cadastro de Candidato {"=" * 8}')
+        print(f'{"=" * 8} CADASTRO DE CANDIDATO {"=" * 8}')
         print('Escolha uma das opções abaixo')
         print('1 - Alterar Candidato')
         print('2 - Incluir Candidato')
-        print('3 - Listar Candidato')
+        print('3 - Listar Candidatos')
         print('4 - Excluir Candidato')
         print('5 - Retornar')
 
-        opcao_selecionada = int(input("Digite a opção: "))
-        return opcao_selecionada
-
+        return self.get_opcao_escolhida("Digite a opção: ", [1, 2, 3, 4, 5])
+        
     def exibe_candidato(self, dados_candidato: dict) -> None:
+        print(f'{"=" * 8} CANDIDATO: {dados_candidato["nome"]} {"=" * 8}')
         print(f'CPF: {dados_candidato["cpf"]}')
-        print(f'NOME: {dados_candidato["nome"]}')
         print(f'E-MAIL: {dados_candidato["email"]}')
         print(f'ENDEREÇO: {dados_candidato["endereco"]}')
         print(f'NÚMERO: {dados_candidato["numero"]}')
@@ -24,6 +23,7 @@ class TelaCandidato(AbstractTela):
         print(f'CARGO: {dados_candidato["cargo"]}')
 
     def get_dados_candidato(self) -> dict:
+        print(f'{"=" * 8} DADOS DO CANDIDATO {"=" * 8}')
         cpf_candidato = input("Digite o CPF do candidato: ")
         nome_candidato = input("Digite o nome do candidato: ")
         email_candidato = input("Digite o e-mail do candidato: ")
@@ -37,13 +37,11 @@ class TelaCandidato(AbstractTela):
                 "nome": nome_candidato,
                 "email": email_candidato,
                 "endereco": endereco_candidato,
-                "tipo_eleitor": tipo_eleitor,
+                "tipo_eleitor": None,
                 "numero": numero_candidato,
-                "chapa": chapa,
-                "cargo": cargo}
+                "chapa": None,
+                "cargo": None}
 
     def get_num_candidato(self) -> int:
         num = int(input("Digite o número do candidato: "))
         return num
-
-

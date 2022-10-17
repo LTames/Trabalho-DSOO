@@ -1,3 +1,56 @@
 class Urna():
     def __init__(self):
-        pass
+        self.__votos = []
+        self.__eleitores = []
+        self.__max_eleitores = None
+        self.__max_candidatos = None
+        self.__turno = None
+        self.__homologada = False
+
+@property
+def votos(self):
+    return self.__votos
+
+@property
+def eleitores(self):
+    return self.__eleitores
+
+@property
+def max_eleitores(self):
+    return self.__max_eleitores
+
+@property
+def max_candidatos(self):
+    return self.__max_candidatos
+
+@property
+def turno(self):
+    return self.__turno
+
+@property
+def homologada(self):
+    return self.__homologada
+
+@votos.setter
+def votos(self, votos):
+    self.votos = votos
+
+@eleitores.setter
+def eleitores(self, eleitores):
+    self.eleitores = eleitores
+
+@max_eleitores.setter
+def max_eleitores(self, max_eleitores):
+    self.max_eleitores = max_eleitores
+
+@max_candidatos.setter
+def max_candidatos(self, max_candidatos):
+    self.max_candidatos = max_candidatos
+
+@turno.setter
+def turno(self, turno):
+    self.turno = turno
+
+@homologada.setter
+def homologada(self, homologada):
+    self.homologada = homologada
