@@ -27,7 +27,11 @@ class TelaUrna(AbstractTela):
         while True:
             try:
                 max_eleitores = int(input("Digite o número máximo de eleitores: "))
+                if max_eleitores <= 0:
+                    raise ValueError
                 max_candidatos = int(input("Digite o número máximo de candidatos: "))
+                if max_candidatos <= 0:
+                    raise ValueError
                 turno = int(input("Digite o turno da eleição: "))
                 
                 while not 1 <= turno <= 2:
@@ -36,7 +40,7 @@ class TelaUrna(AbstractTela):
 
                 return {"max_eleitores": max_eleitores, "max_candidatos": max_candidatos, "turno": turno}
             except ValueError:
-                print("Utilize apenas dígitos!")
+                print("Utilize apenas dígitos maiores que 0!")
 
     def get_dados_votos(self):
         pass
