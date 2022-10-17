@@ -20,3 +20,17 @@ class TelaEleitor(AbstractTela):
         print(f'E-MAIL: {dados_eleitor["email"]}')
         print(f'ENDEREÇO: {dados_eleitor["endereco"]}')
         print(f'TIPO: {dados_eleitor["tipo"]}')
+
+    def get_dados_eleitor(self) -> dict:
+        print(f'{"=" * 8} DADOS DO ELEITOR {"=" * 8}')
+        cpf_eleitor = input("Digite o CPF do eleitor: ")
+        nome_eleitor = input("Digite o nome do eleitor: ")
+        email_eleitor = input("Digite o e-mail do eleitor: ")
+        endereco_eleitor = input("Digite o endereço do eleitor: ")
+        # tipo_eleitor
+
+        return {"cpf": cpf_eleitor,
+                "nome": nome_eleitor,
+                "email": email_eleitor,
+                "endereco": endereco_eleitor,
+                "tipo_eleitor": None}
