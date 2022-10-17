@@ -18,7 +18,7 @@ class ControladorCandidato(AbstractControlador):
         return self.__tela_candidato
     
     @property
-    def controlador_urna(self) -> ControladorUrna:
+    def controlador_urna(self):
         return self.__controlador_urna
 
     def seleciona_candidato(self, numero):

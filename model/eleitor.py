@@ -1,5 +1,5 @@
 class Eleitor():
-    def __init__(self, cpf: str, nome: str, email: str, endereco: str, tipo_eleitor: TipoEleitor) -> None:
+    def __init__(self, cpf: str, nome: str, email: str, endereco: str, tipo_eleitor) -> None:
         self.__cpf = cpf
         self.__nome = nome
         self.__email = email
@@ -23,7 +23,7 @@ class Eleitor():
             return self.__endereco
 
         @property
-        def tipo_eleitor(self) -> TipoEleitor:
+        def tipo_eleitor(self):
             return self.__tipo_eleitor
 
         @cpf.setter

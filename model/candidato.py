@@ -2,8 +2,8 @@ from model.eleitor import Eleitor
 
 
 class Candidato(Eleitor):
-    def __init__(self, cpf: str, nome: str, email: str, endereco: str, tipo_eleitor: TipoEleitor,
-                 numero: int, chapa: Chapa, cargo: CargoCandidato) -> None:
+    def __init__(self, cpf: str, nome: str, email: str, endereco: str, tipo_eleitor,
+                 numero: int, chapa, cargo) -> None:
         super().__init__(cpf, nome, email, endereco, tipo_eleitor)
         self.__numero = numero
         self.__cargo = cargo
@@ -14,11 +14,11 @@ class Candidato(Eleitor):
         return self.__numero
 
     @property
-    def cargo(self) -> CargoCandidato:
+    def cargo(self):
         return self.__cargo
 
     @property
-    def chapa(self) -> Chapa:
+    def chapa(self):
         return self.__chapa
 
     @numero.setter
@@ -26,9 +26,9 @@ class Candidato(Eleitor):
         self.numero = numero
 
     @cargo.setter
-    def cargo(self, cargo: CargoCandidato) -> None:
+    def cargo(self, cargo) -> None:
         self.cargo = cargo
 
     @chapa.setter
-    def chapa(self, chapa: Chapa) -> None:
+    def chapa(self, chapa) -> None:
         self.chapa = chapa
