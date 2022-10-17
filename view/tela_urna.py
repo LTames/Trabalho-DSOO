@@ -1,5 +1,4 @@
 from abstracts.abstract_tela import AbstractTela
-from urna.model.urna import max_candidatos, max_eleitores
 
 
 class TelaUrna(AbstractTela):
