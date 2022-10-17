@@ -1,3 +1,11 @@
 class TipoEleitor():
-    def __init__(self):
-        pass
+    def __init__(self, tipo: str) -> None:
+        self.__tipo = tipo
+
+    @property
+    def tipo(self) -> str:
+        return self.__tipo
+
+    @tipo.setter
+    def tipo(self, tipo) -> str:
+        self.__tipo
