@@ -23,12 +23,12 @@ class Candidato(Eleitor):
 
     @numero.setter
     def numero(self, numero: int) -> None:
-        self.numero = numero
+        self.__numero = numero
 
     @cargo.setter
     def cargo(self, cargo) -> None:
-        self.cargo = cargo
+        self.__cargo = cargo
 
     @chapa.setter
     def chapa(self, chapa) -> None:
-        self.chapa = chapa
+        self.__chapa = chapa
