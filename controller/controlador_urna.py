@@ -35,7 +35,7 @@ class ControladorUrna():
 
     @urna.setter
     def urna(self, urna: Urna):
-        self.urna = urna
+        self.__urna = urna
 
     def configura(self):
         if self.urna.homologada:

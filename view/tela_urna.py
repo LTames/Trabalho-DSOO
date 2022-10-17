@@ -23,12 +23,11 @@ class TelaUrna(AbstractTela):
 
     def get_dados_configuracao(self):
         print(f'{"=" * 8} CONFIGURAÇÃO DA URNA {"=" * 8}')
-        max_eleitores = input("Digite o número máximo de eleitores: ")
-        max_candidatos = input("Digite o número máximo de candidatos: ")
+        
+        max_eleitores = int(input("Digite o número máximo de eleitores: "))
+        max_candidatos = int(input("Digite o número máximo de candidatos: "))
         turno = int(input("Digite o turno da eleição: "))
-
-        return {"max_eleitores": max_eleitores, "max_candidatos": max_candidatos,
-                "turno": turno}
+        return {"max_eleitores": max_eleitores, "max_candidatos": max_candidatos, "turno": turno}
 
     def get_dados_votos(self):
         pass
