@@ -23,11 +23,20 @@ class TelaUrna(AbstractTela):
 
     def get_dados_configuracao(self):
         print(f'{"=" * 8} CONFIGURAÇÃO DA URNA {"=" * 8}')
-        
-        max_eleitores = int(input("Digite o número máximo de eleitores: "))
-        max_candidatos = int(input("Digite o número máximo de candidatos: "))
-        turno = int(input("Digite o turno da eleição: "))
-        return {"max_eleitores": max_eleitores, "max_candidatos": max_candidatos, "turno": turno}
+
+        while True:
+            try:
+                max_eleitores = int(input("Digite o número máximo de eleitores: "))
+                max_candidatos = int(input("Digite o número máximo de candidatos: "))
+                turno = int(input("Digite o turno da eleição: "))
+                
+                while not 1 <= turno <= 2:
+                    print("Turno inválido, digite um turno entre 1 e 2")
+                    turno = int(input("Digite o turno da eleição: "))
+
+                return {"max_eleitores": max_eleitores, "max_candidatos": max_candidatos, "turno": turno}
+            except ValueError:
+                print("Utilize apenas dígitos!")
 
     def get_dados_votos(self):
         pass

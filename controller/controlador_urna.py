@@ -43,7 +43,7 @@ class ControladorUrna():
             return
 
         configuracao = self.tela_urna.get_dados_configuracao()
-        self.urna.max_eleitores = configuracao["max_eleitores"]
+        self.urna.max_eleitores = configuracao["max_eleitores"]        
         self.urna.max_candidatos = configuracao["max_candidatos"]
         self.urna.turno = configuracao["turno"]
         self.urna.homologada = True
