@@ -1,2 +1,2 @@
 class TelaEleitor():
-  pass
+    pass

@@ -1,2 +1,2 @@
 class TelaChapa():
-  pass
+    pass
