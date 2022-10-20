@@ -12,7 +12,7 @@ class TelaUrna(AbstractTela):
         print('5 - Votar')
         print('6 - Gerar Relatório dos Votos')
 
-        opcao = self.get_opcao_escolhida("Digite a opção: ", [1, 2, 3, 4, 5, 6])
+        opcao = self.get_int_input("Digite a opção: ", 6)
         return opcao
 
     def exibe_relatorio(self, dados_relatorio):

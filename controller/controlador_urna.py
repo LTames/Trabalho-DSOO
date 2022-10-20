@@ -3,9 +3,10 @@ from controller.controlador_chapa import ControladorChapa
 from controller.controlador_eleitor import ControladorEleitor
 from model.urna import Urna
 from view.tela_urna import TelaUrna
+from abstracts.abstract_controlador import AbstractControlador
 
 
-class ControladorUrna():
+class ControladorUrna(AbstractControlador):
     def __init__(self) -> None:
         self.__controlador_candidato = ControladorCandidato(self)
         self.__controlador_chapa = ControladorChapa(self)
@@ -33,13 +34,9 @@ class ControladorUrna():
     def urna(self):
         return self.__urna
 
-    @urna.setter
-    def urna(self, urna: Urna):
-        self.__urna = urna
-
     def configura(self):
         if self.urna.homologada:
-            self.tela_urna.alert("Urna já homologada!")
+            self.tela_urna.alert(f"{'=' * 8} URNA JÁ HOMOLOGADA! {'=' * 8}")
             return
 
         configuracao = self.tela_urna.get_dados_configuracao()

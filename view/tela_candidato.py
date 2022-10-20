@@ -11,7 +11,7 @@ class TelaCandidato(AbstractTela):
         print('4 - Excluir Candidato')
         print('5 - Retornar')
 
-        return self.get_opcao_escolhida("Digite a opção: ", [1, 2, 3, 4, 5])
+        return self.get_int_input("Digite a opção: ", 5)
         
     def exibe_candidato(self, dados_candidato: dict) -> None:
         print(f'{"=" * 8} CANDIDATO: {dados_candidato["nome"]} {"=" * 8}')
@@ -43,5 +43,5 @@ class TelaCandidato(AbstractTela):
                 "cargo": None}
 
     def get_num_candidato(self) -> int:
-        num = int(input("Digite o número do candidato: "))
+        num = self.get_int_input("Digite o número do candidato: ")
         return num

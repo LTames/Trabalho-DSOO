@@ -1,6 +1,5 @@
 from model.eleitor import Eleitor
 
-
 class Candidato(Eleitor):
     def __init__(self, cpf: str, nome: str, email: str, endereco: str, tipo_eleitor,
                  numero: int, chapa, cargo) -> None:

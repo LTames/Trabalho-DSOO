@@ -32,7 +32,7 @@ class ControladorCandidato(AbstractControlador):
                 self.tela_candidato.alert("Candidato não existente. Verifique seu número e tente novamente")
                 numero = self.tela_candidato.get_num_candidato()
 
-    def adiciona_candidato(self):
+    def adiciona_candidato(self, candidato):
         dados_candidato = self.tela_candidato.get_dados_candidato()
         self.candidatos.append(Candidato(dados_candidato["cpf"],
                                          dados_candidato["nome"],
@@ -44,10 +44,18 @@ class ControladorCandidato(AbstractControlador):
                                          dados_candidato["cargo"]))
 
     def deleta_candidato(self) -> None:
+        if not self.candidatos:
+            self.tela_candidato.alert(f"{'=' * 8} NÃO HÁ CANDIDATOS CADASTRADOS {'=' * 8}")
+            return
+
         candidato = self.seleciona_candidato(self.tela_candidato.get_num_candidato())
         self.candidatos.remove(candidato)
 
     def altera_candidato(self) -> None:
+        if not self.candidatos:
+            self.tela_candidato.alert(f"{'=' * 8} NÃO HÁ CANDIDATOS CADASTRADOS {'=' * 8}")
+            return
+
         candidato = self.seleciona_candidato(self.tela_candidato.get_num_candidato())
         dados_atualizados = self.tela_candidato.get_dados_candidato()
 
@@ -61,6 +69,10 @@ class ControladorCandidato(AbstractControlador):
         candidato.cargo = dados_atualizados["cargo"]
 
     def lista_candidatos(self) -> None:
+        if not self.candidatos:
+            self.tela_candidato.alert(f"{'=' * 8} NÃO HÁ CANDIDATOS CADASTRADOS {'=' * 8}")
+            return
+
         for candidato in self.candidatos:
             self.tela_candidato.exibe_candidato({"cpf": candidato.cpf,
                                                  "nome": candidato.nome,
@@ -69,9 +81,6 @@ class ControladorCandidato(AbstractControlador):
                                                  "numero": candidato.numero,
                                                  "chapa": candidato.chapa,
                                                  "cargo": candidato.cargo})
-
-    def retorna(self) -> None:
-        self.controlador_urna.inicia_tela()
 
     def inicia_tela(self) -> None:
         acoes = {1: self.altera_candidato, 2: self.adiciona_candidato, 3: self.lista_candidatos, 4: self.deleta_candidato, 5: self.retorna}
