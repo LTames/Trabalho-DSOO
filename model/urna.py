@@ -33,24 +33,24 @@ class Urna():
 
     @votos.setter
     def votos(self, votos):
-        self.votos = votos
+        self.__votos = votos
 
     @eleitores.setter
     def eleitores(self, eleitores):
-        self.eleitores = eleitores
+        self.__eleitores = eleitores
 
     @max_eleitores.setter
     def max_eleitores(self, max_eleitores):
-        self.max_eleitores = max_eleitores
+        self.__max_eleitores = max_eleitores
 
     @max_candidatos.setter
     def max_candidatos(self, max_candidatos):
-        self.max_candidatos = max_candidatos
+        self.__max_candidatos = max_candidatos
 
     @turno.setter
     def turno(self, turno):
-        self.turno = turno
+        self.__turno = turno
 
     @homologada.setter
     def homologada(self, homologada):
-        self.homologada = homologada
+        self.__homologada = homologada

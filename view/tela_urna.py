@@ -27,9 +27,7 @@ class TelaUrna(AbstractTela):
         max_candidatos = self.get_int_input("Digite o número máximo de candidatos: ")
         turno = self.get_int_input("Digite o turno da eleição: ", 2)
 
-        return {"max_eleitores": max_eleitores, "max_candidatos": max_candidatos,
-                "turno": turno}
-
+        return {"max_eleitores": max_eleitores, "max_candidatos": max_candidatos, "turno": turno}
+         
     def get_dados_votos(self):
         pass
-

@@ -39,5 +39,3 @@ class AbstractTela(ABC):
                     print(f"Utilize apenas dígitos entre 1 e {max_int}")
                 else:
                     print(f"Utilize apenas dígitos maiores que zero")
-                
-                

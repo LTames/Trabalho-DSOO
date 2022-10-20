@@ -35,7 +35,7 @@ class ControladorUrna():
 
     @urna.setter
     def urna(self, urna: Urna):
-        self.urna = urna
+        self.__urna = urna
 
     def configura(self):
         if self.urna.homologada:
@@ -43,7 +43,7 @@ class ControladorUrna():
             return
 
         configuracao = self.tela_urna.get_dados_configuracao()
-        self.urna.max_eleitores = configuracao["max_eleitores"]
+        self.urna.max_eleitores = configuracao["max_eleitores"]        
         self.urna.max_candidatos = configuracao["max_candidatos"]
         self.urna.turno = configuracao["turno"]
         self.urna.homologada = True
