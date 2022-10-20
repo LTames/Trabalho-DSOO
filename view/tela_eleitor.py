@@ -1,8 +1,6 @@
 from abstracts.abstract_tela import AbstractTela
 
 class TelaEleitor(AbstractTela):
-    pass
-
     def exibe_opcoes(self) -> int:
         print(f'{"=" * 8} CADASTRO DE ELEITOR {"=" * 8}')
         print('Escolha uma das opções abaixo')
