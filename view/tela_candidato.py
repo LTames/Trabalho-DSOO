@@ -29,7 +29,7 @@ class TelaCandidato(AbstractTela):
         email_candidato = input("Digite o e-mail do candidato: ")
         endereco_candidato = input("Digite o endereço do candidato: ")
         # tipo_eleitor
-        numero_candidato = int(input("Digite o número do candidato: "))
+        numero_candidato = self.get_int_input("Digite o número do candidato: ", 98)
         # chapa
         # cargo
 

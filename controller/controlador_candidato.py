@@ -22,26 +22,32 @@ class ControladorCandidato(AbstractControlador):
         return self.__controlador_urna
 
     def seleciona_candidato(self, numero):
-        while True:
-            try:
-                for candidato in self.candidatos:
-                    if candidato.numero == numero:
-                        return candidato
-                raise ValueError
-            except ValueError:
-                self.tela_candidato.alert("Candidato não existente. Verifique seu número e tente novamente")
-                numero = self.tela_candidato.get_num_candidato()
+        try:
+            for candidato in self.candidatos:
+                if candidato.numero == numero:
+                    return candidato
+            raise ValueError
+        except ValueError:
+            self.tela_candidato.alert("Candidato não existente. Verifique seu número e tente novamente")
 
-    def adiciona_candidato(self, candidato):
-        dados_candidato = self.tela_candidato.get_dados_candidato()
-        self.candidatos.append(Candidato(dados_candidato["cpf"],
-                                         dados_candidato["nome"],
-                                         dados_candidato["email"],
-                                         dados_candidato["endereco"],
-                                         dados_candidato["tipo_eleitor"],
-                                         dados_candidato["numero"],
-                                         dados_candidato["chapa"],
-                                         dados_candidato["cargo"]))
+    def adiciona_candidato(self):
+        try:
+            dados_candidato = self.tela_candidato.get_dados_candidato()
+            for candidato in self.candidatos:
+                if dados_candidato["numero"] == candidato.numero:
+                    raise ValueError
+
+            self.candidatos.append(Candidato(dados_candidato["cpf"],
+                                             dados_candidato["nome"],
+                                             dados_candidato["email"],
+                                             dados_candidato["endereco"],
+                                             dados_candidato["tipo_eleitor"],
+                                             dados_candidato["numero"],
+                                             dados_candidato["chapa"],
+                                             dados_candidato["cargo"]))
+
+        except ValueError:
+            self.tela_candidato.alert(f"{'=' * 8} CANDIDATO JÁ CADASTRADO COM ESSE NÚMERO {'=' * 8}")
 
     def deleta_candidato(self) -> None:
         if not self.candidatos:
@@ -49,6 +55,8 @@ class ControladorCandidato(AbstractControlador):
             return
 
         candidato = self.seleciona_candidato(self.tela_candidato.get_num_candidato())
+        if not candidato:
+            return
         self.candidatos.remove(candidato)
 
     def altera_candidato(self) -> None:
@@ -57,8 +65,10 @@ class ControladorCandidato(AbstractControlador):
             return
 
         candidato = self.seleciona_candidato(self.tela_candidato.get_num_candidato())
-        dados_atualizados = self.tela_candidato.get_dados_candidato()
+        if not candidato:
+            return
 
+        dados_atualizados = self.tela_candidato.get_dados_candidato()
         candidato.cpf = dados_atualizados["cpf"]
         candidato.nome = dados_atualizados["nome"]
         candidato.email = dados_atualizados["email"]

@@ -5,7 +5,7 @@ class Urna():
         self.__max_eleitores = None
         self.__max_candidatos = None
         self.__turno = None
-        self.__homologada = False
+        self.__configurada = False
 
     @property
     def votos(self):
@@ -28,8 +28,8 @@ class Urna():
         return self.__turno
 
     @property
-    def homologada(self):
-        return self.__homologada
+    def configurada(self):
+        return self.__configurada
 
     @votos.setter
     def votos(self, votos):
@@ -51,6 +51,6 @@ class Urna():
     def turno(self, turno):
         self.__turno = turno
 
-    @homologada.setter
-    def homologada(self, homologada):
-        self.__homologada = homologada
+    @configurada.setter
+    def configurada(self, configurada):
+        self.__configurada = configurada
