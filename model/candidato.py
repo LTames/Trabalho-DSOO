@@ -1,14 +1,9 @@
 from model.eleitor import Eleitor
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from model.cargo_candidato import CargoCandidato
-    from model.chapa import Chapa
-    from model.tipo_eleitor import TipoEleitor 
 
 
 class Candidato(Eleitor):
-    def __init__(self, cpf: str, nome: str, email: str, endereco: str, tipo_eleitor: TipoEleitor,
-                 numero: int, chapa: Chapa, cargo: CargoCandidato) -> None:
+    def __init__(self, cpf: str, nome: str, email: str, endereco: str, tipo_eleitor: 'TipoEleitor',
+                 numero: int, chapa: 'Chapa', cargo: 'CargoCandidato') -> None:
         super().__init__(cpf, nome, email, endereco, tipo_eleitor)
         self.__numero = numero
         self.__cargo = cargo
@@ -19,11 +14,11 @@ class Candidato(Eleitor):
         return self.__numero
 
     @property
-    def cargo(self):
+    def cargo(self) -> 'CargoCandidato':
         return self.__cargo
 
     @property
-    def chapa(self):
+    def chapa(self) -> 'Chapa':
         return self.__chapa
 
     @numero.setter

@@ -1,11 +1,8 @@
-class CargoCandidato():
-    def __init__(self, cargo: str) -> None:
-        self.__cargo = cargo
+from enum import Enum
 
-    @property
-    def cargo(self):
-        return self.__cargo
 
-    @cargo.setter
-    def cargo(self, cargo):
-        self.__cargo = cargo
+class CargoCandidato(Enum):
+    REITOR = 1
+    PRO_REITOR_GRADUACAO = 2
+    PRO_REITOR_PESQUISA = 3
+    PRO_REITOR_EXTENSAO = 4

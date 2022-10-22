@@ -1,11 +1,7 @@
-class TipoEleitor():
-    def __init__(self, tipo: str) -> None:
-        self.__tipo = tipo
+from enum import Enum
 
-    @property
-    def tipo(self) -> str:
-        return self.__tipo
 
-    @tipo.setter
-    def tipo(self, tipo) -> str:
-        self.__tipo
+class TipoEleitor(Enum):
+    ALUNO = 1
+    PROFESSOR = 2
+    TECNICO_ADMINISTRATIVO = 3  
