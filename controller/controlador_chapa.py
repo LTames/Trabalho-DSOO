@@ -7,7 +7,7 @@ class ControladorChapa(AbstractControlador):
     def __init__(self, controlador_urna) -> None:
         self.__controlador_urna = controlador_urna
         self.__tela_chapa = TelaChapa()
-        self.__chapas = [Chapa(40, "ChapaTeste")]
+        self.__chapas = [Chapa(40, "ChapaTeste40"), Chapa(30, "ChapaTeste30")]
 
     @property
     def controlador_urna(self):

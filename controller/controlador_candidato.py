@@ -32,8 +32,13 @@ class ControladorCandidato(AbstractControlador):
                 "Candidato não existente. Verifique seu número e tente novamente")
 
     def adiciona_candidato(self):
+        if len(self.candidatos) == self.controlador_urna.urna.max_eleitores:
+            raise IndexError
+
         try:
-            dados_candidato = self.tela_candidato.get_dados_candidato(self.controlador_urna.controlador_chapa.chapas)
+            chapas_cadastradas = self.controlador_urna.controlador_chapa.chapas
+            dados_candidato = self.tela_candidato.get_dados_candidato(chapas_cadastradas)
+
             for candidato in self.candidatos:
                 if dados_candidato["numero"] == candidato.numero:
                     raise ValueError
@@ -45,11 +50,13 @@ class ControladorCandidato(AbstractControlador):
                                              TipoEleitor(
                                                  dados_candidato["tipo_eleitor"]),
                                              dados_candidato["numero"],
-                                             dados_candidato["chapa"],
+                                             chapas_cadastradas[dados_candidato["chapa"]],
                                              CargoCandidato(dados_candidato["cargo"])))
 
         except ValueError:
-            self.tela_candidato.alert("Candidato já cadastrado com esse número")
+            self.tela_candidato.alert("Candidato já cadastrado com esse número!")
+        except IndexError:
+            self.tela_candidato.alert("Número máximo de candidatos atingido!")
 
     def deleta_candidato(self) -> None:
         if not self.candidatos:
@@ -93,7 +100,7 @@ class ControladorCandidato(AbstractControlador):
                                                  "email": candidato.email,
                                                  "endereco": candidato.endereco,
                                                  "numero": candidato.numero,
-                                                 "chapa": candidato.chapa,
+                                                 "chapa": candidato.chapa.num_chapa,
                                                  "cargo": candidato.cargo})
 
     def inicia_tela(self) -> None:
