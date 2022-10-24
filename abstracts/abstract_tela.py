@@ -7,8 +7,8 @@ class AbstractTela(ABC):
     def exibe_opcoes(self):
         pass
 
-    def alert(self, msg) -> None:
-        print(msg)
+    def alert(self, msg: str) -> None:
+        print(f"{'=' * 8} {msg.upper()} {'=' * 8}")
 
     def get_int_input(self, input_msg: str, max_int: int = None):
         while True:
@@ -25,14 +25,12 @@ class AbstractTela(ABC):
                 return entrada
             except ValueError:
                 if max_int:
-                    print(
-                        f"{'=' * 8} UTILIZE APENAS DÍGITOS ENTRE 1 E {max_int} {'=' * 8}")
+                    self.alert(f"Utilize apenas dígitos entre 1 e {max_int}")
                 else:
-                    print(
-                        f"{'=' * 8} UTILIZE APENAS DÍGITOS MAIORES QUE ZERO {'=' * 8}")
+                    self.alert(f"Utilize apenas dígitos maiores que zero")
 
     def get_tipo_eleitor(self):
-        print('Selecione qual será o tipo de eleitor')
+        print('--- Selecione qual será o tipo de eleitor ---')
         print('1 - Aluno')
         print('2 - Professor')
         print('3 - Técnico Administrativo')

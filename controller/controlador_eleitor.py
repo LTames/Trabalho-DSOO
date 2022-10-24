@@ -11,15 +11,15 @@ class ControladorEleitor(AbstractControlador):
 
     @property
     def controlador_urna(self):
-        return self.controlador_urna
+        return self.__controlador_urna
 
     @property
     def tela_eleitor(self) -> TelaEleitor:
-        return self.tela_eleitor
+        return self.__tela_eleitor
 
     @property
     def eleitores(self) -> list:
-        return self.eleitores
+        return self.__eleitores
 
     def adiciona_eleitor(self):
         try:
@@ -35,8 +35,20 @@ class ControladorEleitor(AbstractControlador):
                                           dados_eleitor["tipo_eleitor"]))
 
         except ValueError:
-            self.tela_eleitor.alert(
-                f"{'=' * 8} ELEITOR JÁ CADASTRADO COM ESSE CPF {'=' * 8}")
+            self.tela_eleitor.alert("Eleitor já cadastrado com esse CPF")
 
-    def inicia_tela(self):
+    def deleta_eleitor(self):
         pass
+
+    def altera_eleitor(self):
+        pass
+
+    def lista_eleitores(self):
+        pass
+
+    def inicia_tela(self) -> None:
+        acoes = {1: self.altera_eleitor, 2: self.adiciona_eleitor,
+                 3: self.lista_eleitores, 4: self.deleta_eleitor, 5: self.retorna}
+
+        while True:
+            acoes[self.tela_eleitor.exibe_opcoes()]()

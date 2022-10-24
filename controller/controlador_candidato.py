@@ -33,7 +33,7 @@ class ControladorCandidato(AbstractControlador):
 
     def adiciona_candidato(self):
         try:
-            dados_candidato = self.tela_candidato.get_dados_candidato()
+            dados_candidato = self.tela_candidato.get_dados_candidato(self.controlador_urna.controlador_chapa.chapas)
             for candidato in self.candidatos:
                 if dados_candidato["numero"] == candidato.numero:
                     raise ValueError
@@ -49,13 +49,11 @@ class ControladorCandidato(AbstractControlador):
                                              CargoCandidato(dados_candidato["cargo"])))
 
         except ValueError:
-            self.tela_candidato.alert(
-                f"{'=' * 8} CANDIDATO JÁ CADASTRADO COM ESSE NÚMERO {'=' * 8}")
+            self.tela_candidato.alert("Candidato já cadastrado com esse número")
 
     def deleta_candidato(self) -> None:
         if not self.candidatos:
-            self.tela_candidato.alert(
-                f"{'=' * 8} NÃO HÁ CANDIDATOS CADASTRADOS {'=' * 8}")
+            self.tela_candidato.alert("Não há candidatos cadastrados")
             return
 
         candidato = self.seleciona_candidato(
@@ -66,8 +64,7 @@ class ControladorCandidato(AbstractControlador):
 
     def altera_candidato(self) -> None:
         if not self.candidatos:
-            self.tela_candidato.alert(
-                f"{'=' * 8} NÃO HÁ CANDIDATOS CADASTRADOS {'=' * 8}")
+            self.tela_candidato.alert("Não há candidatos cadastrados")
             return
 
         candidato = self.seleciona_candidato(
@@ -87,8 +84,7 @@ class ControladorCandidato(AbstractControlador):
 
     def lista_candidatos(self) -> None:
         if not self.candidatos:
-            self.tela_candidato.alert(
-                f"{'=' * 8} NÃO HÁ CANDIDATOS CADASTRADOS {'=' * 8}")
+            self.tela_candidato.alert("Não há candidatos cadastrados")
             return
 
         for candidato in self.candidatos:

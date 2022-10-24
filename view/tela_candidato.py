@@ -22,7 +22,7 @@ class TelaCandidato(AbstractTela):
         print(f'CHAPA: {dados_candidato["chapa"]}')
         print(f'CARGO: {dados_candidato["cargo"]}')
 
-    def get_dados_candidato(self) -> dict:
+    def get_dados_candidato(self, chapas_cadastradas: list) -> dict:
         print(f'{"=" * 8} DADOS DO CANDIDATO {"=" * 8}')
         cpf_candidato = input("Digite o CPF do candidato: ")
         nome_candidato = input("Digite o nome do candidato: ")
@@ -31,8 +31,8 @@ class TelaCandidato(AbstractTela):
         tipo_eleitor = self.get_tipo_eleitor()
         numero_candidato = self.get_int_input(
             "Digite o número do candidato: ", 98)
-        # chapa
-        cargo = self.get_tipo_cargo()
+        chapa = self.get_chapa(chapas_cadastradas)
+        cargo = self.get_cargo_candidato()
 
         return {"cpf": cpf_candidato,
                 "nome": nome_candidato,
@@ -40,17 +40,23 @@ class TelaCandidato(AbstractTela):
                 "endereco": endereco_candidato,
                 "tipo_eleitor": tipo_eleitor,
                 "numero": numero_candidato,
-                "chapa": None,
+                "chapa": chapa,
                 "cargo": cargo}
 
     def get_num_candidato(self) -> int:
         num = self.get_int_input("Digite o número do candidato: ")
         return num
 
-    def get_tipo_cargo(self):
-        print('Selecione o cargo no qual o candidato irá concorrer')
+    def get_cargo_candidato(self) -> int:
+        print('--- Selecione o cargo no qual o candidato irá concorrer ---')
         print('1 - Reitor')
         print('2 - Pró Reitor (Graduação)')
         print('3 - Pró Reitor (Pesquisa)')
-        print('4 - Pró Reitor (EXtensão)')
+        print('4 - Pró Reitor (Extensão)')
         return self.get_int_input('Cargo: ', 4)
+
+    def get_chapa(self, chapas: list) -> int:
+        print('Selecione a atual chapa do candidato')
+        for i, chapa in enumerate(chapas):
+            print(f'{i + 1} - {chapa.nome_chapa} ({chapa.num_chapa})')
+        return self.get_int_input('Chapa: ', len(chapas))

@@ -36,8 +36,8 @@ class ControladorUrna(AbstractControlador):
         return self.__urna
 
     def configura(self):
-        if self.urna.homologada:
-            self.tela_urna.alert(f"{'=' * 8} URNA JÁ CONFIGURADA! {'=' * 8}")
+        if self.urna.configurada:
+            self.tela_urna.alert("Urna já configurada!")
             return
 
         configuracao = self.tela_urna.get_dados_configuracao()
@@ -47,9 +47,9 @@ class ControladorUrna(AbstractControlador):
         self.urna.configurada = True
 
     def cadastra_candidato(self):
-        # if not self.controlador_chapa.chapas:
-        #    self.controlador_candidato.tela_candidato.alert(f"{'=' * 8} CADASTRE UMA CHAPA PRIMEIRO {'=' * 8}")
-        #    return
+        if not self.controlador_chapa.chapas:
+           self.controlador_candidato.tela_candidato.alert("Cadastre uma chapa primeiro!")
+           return
 
         self.controlador_candidato.inicia_tela()
 

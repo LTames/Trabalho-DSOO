@@ -11,7 +11,7 @@ class TelaEleitor(AbstractTela):
         print('4 - Excluir Eleitor')
         print('5 - Retornar')
 
-        return self.get_int_input("Digite um número: ", [1, 2, 3, 4, 5])
+        return self.get_int_input("Digite um número: ", 5)
 
     def exibe_eleitor(self, dados_eleitor: dict) -> None:
         print(f'{"=" * 8} ELEITOR: {dados_eleitor["nome"]} {"=" * 8}')
