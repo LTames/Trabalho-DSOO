@@ -1,5 +1,6 @@
 from abstracts.abstract_tela import AbstractTela
 
+
 class TelaEleitor(AbstractTela):
     def exibe_opcoes(self) -> int:
         print(f'{"=" * 8} CADASTRO DE ELEITOR {"=" * 8}')
@@ -9,9 +10,9 @@ class TelaEleitor(AbstractTela):
         print('3 - Listar Eleitor')
         print('4 - Excluir Eleitor')
         print('5 - Retornar')
-        
+
         return self.get_int_input("Digite um número: ", [1, 2, 3, 4, 5])
-    
+
     def exibe_eleitor(self, dados_eleitor: dict) -> None:
         print(f'{"=" * 8} ELEITOR: {dados_eleitor["nome"]} {"=" * 8}')
         print(f'CPF: {dados_eleitor["cpf"]}')

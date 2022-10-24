@@ -41,21 +41,21 @@ class ControladorUrna(AbstractControlador):
             return
 
         configuracao = self.tela_urna.get_dados_configuracao()
-        self.urna.max_eleitores = configuracao["max_eleitores"]        
+        self.urna.max_eleitores = configuracao["max_eleitores"]
         self.urna.max_candidatos = configuracao["max_candidatos"]
         self.urna.turno = configuracao["turno"]
         self.urna.configurada = True
 
     def cadastra_candidato(self):
-        #if not self.controlador_chapa.chapas:
+        # if not self.controlador_chapa.chapas:
         #    self.controlador_candidato.tela_candidato.alert(f"{'=' * 8} CADASTRE UMA CHAPA PRIMEIRO {'=' * 8}")
         #    return
-            
+
         self.controlador_candidato.inicia_tela()
-    
+
     def cadastra_chapa(self):
         self.controlador_chapa.inicia_tela()
-    
+
     def cadastra_eleitor(self):
         self.controlador_eleitor.inicia_tela()
 
@@ -81,7 +81,14 @@ class ControladorUrna(AbstractControlador):
         self.inicia_tela()
 
     def inicia_tela(self):
-        acoes = {1: self.configura, 2: self.cadastra_candidato, 3: self.cadastra_chapa, 4: self.cadastra_eleitor, 5: self.vota, 6: self.gera_relatorio_votos, 7: exit}
+        acoes = {
+            1: self.configura,
+            2: self.cadastra_candidato,
+            3: self.cadastra_chapa,
+            4: self.cadastra_eleitor,
+            5: self.vota,
+            6: self.gera_relatorio_votos,
+            7: exit}
 
         while True:
             acoes[self.tela_urna.exibe_opcoes()]()

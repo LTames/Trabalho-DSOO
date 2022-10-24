@@ -3,7 +3,6 @@ from view.tela_candidato import TelaCandidato
 from model.candidato import Candidato, CargoCandidato, TipoEleitor
 
 
-
 class ControladorCandidato(AbstractControlador):
     def __init__(self, controlador_urna) -> None:
         self.__candidatos = []
@@ -13,11 +12,11 @@ class ControladorCandidato(AbstractControlador):
     @property
     def candidatos(self) -> list:
         return self.__candidatos
-    
+
     @property
     def tela_candidato(self) -> TelaCandidato:
         return self.__tela_candidato
-    
+
     @property
     def controlador_urna(self):
         return self.__controlador_urna
@@ -29,7 +28,8 @@ class ControladorCandidato(AbstractControlador):
                     return candidato
             raise ValueError
         except ValueError:
-            self.tela_candidato.alert("Candidato não existente. Verifique seu número e tente novamente")
+            self.tela_candidato.alert(
+                "Candidato não existente. Verifique seu número e tente novamente")
 
     def adiciona_candidato(self):
         try:
@@ -37,35 +37,41 @@ class ControladorCandidato(AbstractControlador):
             for candidato in self.candidatos:
                 if dados_candidato["numero"] == candidato.numero:
                     raise ValueError
-            
+
             self.candidatos.append(Candidato(dados_candidato["cpf"],
                                              dados_candidato["nome"],
                                              dados_candidato["email"],
                                              dados_candidato["endereco"],
-                                             TipoEleitor(dados_candidato["tipo_eleitor"]),
+                                             TipoEleitor(
+                                                 dados_candidato["tipo_eleitor"]),
                                              dados_candidato["numero"],
                                              dados_candidato["chapa"],
                                              CargoCandidato(dados_candidato["cargo"])))
 
         except ValueError:
-            self.tela_candidato.alert(f"{'=' * 8} CANDIDATO JÁ CADASTRADO COM ESSE NÚMERO {'=' * 8}")
+            self.tela_candidato.alert(
+                f"{'=' * 8} CANDIDATO JÁ CADASTRADO COM ESSE NÚMERO {'=' * 8}")
 
     def deleta_candidato(self) -> None:
         if not self.candidatos:
-            self.tela_candidato.alert(f"{'=' * 8} NÃO HÁ CANDIDATOS CADASTRADOS {'=' * 8}")
+            self.tela_candidato.alert(
+                f"{'=' * 8} NÃO HÁ CANDIDATOS CADASTRADOS {'=' * 8}")
             return
 
-        candidato = self.seleciona_candidato(self.tela_candidato.get_num_candidato())
+        candidato = self.seleciona_candidato(
+            self.tela_candidato.get_num_candidato())
         if not candidato:
             return
         self.candidatos.remove(candidato)
 
     def altera_candidato(self) -> None:
         if not self.candidatos:
-            self.tela_candidato.alert(f"{'=' * 8} NÃO HÁ CANDIDATOS CADASTRADOS {'=' * 8}")
+            self.tela_candidato.alert(
+                f"{'=' * 8} NÃO HÁ CANDIDATOS CADASTRADOS {'=' * 8}")
             return
 
-        candidato = self.seleciona_candidato(self.tela_candidato.get_num_candidato())
+        candidato = self.seleciona_candidato(
+            self.tela_candidato.get_num_candidato())
         if not candidato:
             return
 
@@ -81,7 +87,8 @@ class ControladorCandidato(AbstractControlador):
 
     def lista_candidatos(self) -> None:
         if not self.candidatos:
-            self.tela_candidato.alert(f"{'=' * 8} NÃO HÁ CANDIDATOS CADASTRADOS {'=' * 8}")
+            self.tela_candidato.alert(
+                f"{'=' * 8} NÃO HÁ CANDIDATOS CADASTRADOS {'=' * 8}")
             return
 
         for candidato in self.candidatos:
@@ -94,7 +101,8 @@ class ControladorCandidato(AbstractControlador):
                                                  "cargo": candidato.cargo})
 
     def inicia_tela(self) -> None:
-        acoes = {1: self.altera_candidato, 2: self.adiciona_candidato, 3: self.lista_candidatos, 4: self.deleta_candidato, 5: self.retorna}
+        acoes = {1: self.altera_candidato, 2: self.adiciona_candidato,
+                 3: self.lista_candidatos, 4: self.deleta_candidato, 5: self.retorna}
 
         while True:
             acoes[self.tela_candidato.exibe_opcoes()]()

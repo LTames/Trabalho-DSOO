@@ -12,7 +12,7 @@ class TelaCandidato(AbstractTela):
         print('5 - Retornar')
 
         return self.get_int_input("Digite a opção: ", 5)
-        
+
     def exibe_candidato(self, dados_candidato: dict) -> None:
         print(f'{"=" * 8} CANDIDATO: {dados_candidato["nome"]} {"=" * 8}')
         print(f'CPF: {dados_candidato["cpf"]}')
@@ -29,7 +29,8 @@ class TelaCandidato(AbstractTela):
         email_candidato = input("Digite o e-mail do candidato: ")
         endereco_candidato = input("Digite o endereço do candidato: ")
         tipo_eleitor = self.get_tipo_eleitor()
-        numero_candidato = self.get_int_input("Digite o número do candidato: ", 98)
+        numero_candidato = self.get_int_input(
+            "Digite o número do candidato: ", 98)
         # chapa
         cargo = self.get_tipo_cargo()
 
@@ -46,17 +47,10 @@ class TelaCandidato(AbstractTela):
         num = self.get_int_input("Digite o número do candidato: ")
         return num
 
-    def get_tipo_eleitor(self):
-        print(f'Selecione qual será o tipo de eleitor')
-        print(f'1 - Aluno')
-        print(f'2 - Professor')
-        print(f'3 - Técnico Administrativo')
-        return self.get_int_input('Tipo: ', 3)
-
     def get_tipo_cargo(self):
-        print(f'Selecione o cargo no qual o candidato irá concorrer')
-        print(f'1 - Reitor')
-        print(f'2 - Pró Reitor (Graduação)')
-        print(f'3 - Pró Reitor (Pesquisa)')
-        print(f'4 - Pró Reitor (EXtensão)')
+        print('Selecione o cargo no qual o candidato irá concorrer')
+        print('1 - Reitor')
+        print('2 - Pró Reitor (Graduação)')
+        print('3 - Pró Reitor (Pesquisa)')
+        print('4 - Pró Reitor (EXtensão)')
         return self.get_int_input('Cargo: ', 4)

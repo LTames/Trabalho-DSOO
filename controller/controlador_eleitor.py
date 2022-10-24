@@ -2,6 +2,7 @@ from abstracts.abstract_controlador import AbstractControlador
 from view.tela_eleitor import TelaEleitor
 from model.eleitor import Eleitor
 
+
 class ControladorEleitor(AbstractControlador):
     def __init__(self, controlador_urna) -> None:
         self.__controlador_urna = controlador_urna
@@ -28,13 +29,14 @@ class ControladorEleitor(AbstractControlador):
                     raise ValueError
 
             self.eleitores.append(Eleitor(dados_eleitor["cpf"],
-                                             dados_eleitor["nome"],
-                                             dados_eleitor["email"],
-                                             dados_eleitor["endereco"],
-                                             dados_eleitor["tipo_eleitor"]))
-                                             
+                                          dados_eleitor["nome"],
+                                          dados_eleitor["email"],
+                                          dados_eleitor["endereco"],
+                                          dados_eleitor["tipo_eleitor"]))
+
         except ValueError:
-            self.tela_eleitor.alert(f"{'=' * 8} ELEITOR JÁ CADASTRADO COM ESSE CPF {'=' * 8}")
+            self.tela_eleitor.alert(
+                f"{'=' * 8} ELEITOR JÁ CADASTRADO COM ESSE CPF {'=' * 8}")
 
     def inicia_tela(self):
         pass
