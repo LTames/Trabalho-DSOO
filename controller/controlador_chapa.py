@@ -34,3 +34,6 @@ class ControladorChapa(AbstractControlador):
 
         except ValueError:
             self.tela_chapa.alert(f"{'=' * 8} CHAPA JÁ CADASTRADA COM ESSE NÚMERO {'=' * 8}")
+
+    def inicia_tela(self):
+        pass

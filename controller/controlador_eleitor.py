@@ -35,3 +35,6 @@ class ControladorEleitor(AbstractControlador):
                                              
         except ValueError:
             self.tela_eleitor.alert(f"{'=' * 8} ELEITOR JÁ CADASTRADO COM ESSE CPF {'=' * 8}")
+
+    def inicia_tela(self):
+        pass

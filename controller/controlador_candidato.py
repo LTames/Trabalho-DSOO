@@ -1,6 +1,7 @@
 from abstracts.abstract_controlador import AbstractControlador
 from view.tela_candidato import TelaCandidato
-from model.candidato import Candidato
+from model.candidato import Candidato, CargoCandidato, TipoEleitor
+
 
 
 class ControladorCandidato(AbstractControlador):
@@ -36,15 +37,15 @@ class ControladorCandidato(AbstractControlador):
             for candidato in self.candidatos:
                 if dados_candidato["numero"] == candidato.numero:
                     raise ValueError
-
+            
             self.candidatos.append(Candidato(dados_candidato["cpf"],
                                              dados_candidato["nome"],
                                              dados_candidato["email"],
                                              dados_candidato["endereco"],
-                                             dados_candidato["tipo_eleitor"],
+                                             TipoEleitor(dados_candidato["tipo_eleitor"]),
                                              dados_candidato["numero"],
                                              dados_candidato["chapa"],
-                                             dados_candidato["cargo"]))
+                                             CargoCandidato(dados_candidato["cargo"])))
 
         except ValueError:
             self.tela_candidato.alert(f"{'=' * 8} CANDIDATO JÁ CADASTRADO COM ESSE NÚMERO {'=' * 8}")

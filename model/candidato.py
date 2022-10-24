@@ -1,4 +1,5 @@
-from model.eleitor import Eleitor
+from model.eleitor import Eleitor, TipoEleitor
+from model.cargo_candidato import CargoCandidato
 
 
 class Candidato(Eleitor):

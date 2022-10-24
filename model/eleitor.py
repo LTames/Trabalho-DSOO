@@ -1,3 +1,6 @@
+from model.tipo_eleitor import TipoEleitor
+
+
 class Eleitor():
     def __init__(self, cpf: str, nome: str, email: str, endereco: str, tipo_eleitor: 'TipoEleitor') -> None:
         self.__cpf = cpf

@@ -28,20 +28,35 @@ class TelaCandidato(AbstractTela):
         nome_candidato = input("Digite o nome do candidato: ")
         email_candidato = input("Digite o e-mail do candidato: ")
         endereco_candidato = input("Digite o endereço do candidato: ")
-        # tipo_eleitor
+        tipo_eleitor = self.get_tipo_eleitor()
         numero_candidato = self.get_int_input("Digite o número do candidato: ", 98)
         # chapa
-        # cargo
+        cargo = self.get_tipo_cargo()
 
         return {"cpf": cpf_candidato,
                 "nome": nome_candidato,
                 "email": email_candidato,
                 "endereco": endereco_candidato,
-                "tipo_eleitor": None,
+                "tipo_eleitor": tipo_eleitor,
                 "numero": numero_candidato,
                 "chapa": None,
-                "cargo": None}
+                "cargo": cargo}
 
     def get_num_candidato(self) -> int:
         num = self.get_int_input("Digite o número do candidato: ")
         return num
+
+    def get_tipo_eleitor(self):
+        print(f'Selecione qual será o tipo de eleitor')
+        print(f'1 - Aluno')
+        print(f'2 - Professor')
+        print(f'3 - Técnico Administrativo')
+        return self.get_int_input('Tipo: ', 3)
+
+    def get_tipo_cargo(self):
+        print(f'Selecione o cargo no qual o candidato irá concorrer')
+        print(f'1 - Reitor')
+        print(f'2 - Pró Reitor (Graduação)')
+        print(f'3 - Pró Reitor (Pesquisa)')
+        print(f'4 - Pró Reitor (EXtensão)')
+        return self.get_int_input('Cargo: ', 4)
