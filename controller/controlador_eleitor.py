@@ -21,11 +21,21 @@ class ControladorEleitor(AbstractControlador):
     def eleitores(self) -> list:
         return self.__eleitores
 
+    def seleciona_eleitor(self, cpf):
+        try:
+            for eleitor in self.eleitores:
+                if eleitor.cpf == cpf:
+                    return eleitor
+            raise ValueError
+        except ValueError:
+            self.tela_eleitor.alert(
+                "Eleitor não existente. Verifique seu cpf e tente novamente")
+    
     def adiciona_eleitor(self):
         try:
             dados_eleitor = self.tela_eleitor.get_dados_eleitor()
             for eleitor in self.eleitores:
-                if dados_eleitor["numero"] == eleitor.cpf:
+                if dados_eleitor["cpf"] == eleitor.cpf:
                     raise ValueError
 
             self.eleitores.append(Eleitor(dados_eleitor["cpf"],
@@ -38,13 +48,37 @@ class ControladorEleitor(AbstractControlador):
             self.tela_eleitor.alert("Eleitor já cadastrado com esse CPF")
 
     def deleta_eleitor(self):
-        pass
-
+        if not self.eleitores:
+            self.tela_eleitor.alert("Não há eleitores cadastrados")
+            return
+        eleitor = self.seleciona_eleitor(self.tela_eleitor.get_cpf_eleitor())
+        if not eleitor:
+            return
+        self.eleitores.remove(eleitor)
+    
     def altera_eleitor(self):
-        pass
+        if not self.eleitores:
+            self.tela_eleitor.alert('Não há eleitores cadastrados')
+            return
+        eleitor = self.seleciona_eleitor(self.tela_eleitor.get_cpf_eleitor())
+        if not eleitor:
+            return
+        
+        dados_atualizados = self.tela_eleitor.get_cpf_eleitor()
+        eleitor.cpf = dados_atualizados["cpf"]
+        eleitor.nome = dados_atualizados["nome"]
+        eleitor.email = dados_atualizados["email"]
+        eleitor.endereco = dados_atualizados["endereco"]
+        eleitor.tipo_eleitor = dados_atualizados["tipo_eleitor"]
 
     def lista_eleitores(self):
-        pass
+        if not self.eleitores:
+            self.tela_eleitor.alert('Não há eleitores cadastrados')
+            return
+        for eleitor in self.eleitores:
+            self.tela_eleitor.exibe_eleitor({'cpf': eleitor.cpf, 'nome': eleitor.nome,
+                                             'email': eleitor.email, 'endereco': eleitor.endereco,
+                                             'tipo_eleitor': eleitor.tipo_eleitor})
 
     def inicia_tela(self) -> None:
         acoes = {1: self.altera_eleitor, 2: self.adiciona_eleitor,
