@@ -26,3 +26,7 @@ class TelaChapa(AbstractTela):
         return {"num": num,
                 "nome": nome,
                 "candidatos": candidatos}
+
+    def get_num_chapa(self) -> int:
+        num = self.get_int_input("Digite o número da chapa: ")
+        return num
