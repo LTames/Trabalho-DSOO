@@ -10,7 +10,7 @@ class TelaChapa(AbstractTela):
         print('4 - Excluir Chapa')
         print('5 - Retornar')
 
-        return self.get_opcao_escolhida("Digite um número: ", [1, 2, 3, 4, 5])
+        return self.get_int_input("Digite um número: ", [1, 2, 3, 4, 5])
     
     def exibe_chapa(self, dados_chapa: dict) -> None:
         print(f'{"=" * 8} CHAPA: {dados_chapa["nome"]} {"=" * 8}')
