@@ -4,6 +4,7 @@ from controller.controlador_eleitor import ControladorEleitor
 from model.urna import Urna
 from view.tela_urna import TelaUrna
 from abstracts.abstract_controlador import AbstractControlador
+from sys import exit
 
 
 class ControladorUrna(AbstractControlador):
@@ -36,16 +37,20 @@ class ControladorUrna(AbstractControlador):
 
     def configura(self):
         if self.urna.homologada:
-            self.tela_urna.alert(f"{'=' * 8} URNA JÁ HOMOLOGADA! {'=' * 8}")
+            self.tela_urna.alert(f"{'=' * 8} URNA JÁ CONFIGURADA! {'=' * 8}")
             return
 
         configuracao = self.tela_urna.get_dados_configuracao()
         self.urna.max_eleitores = configuracao["max_eleitores"]        
         self.urna.max_candidatos = configuracao["max_candidatos"]
         self.urna.turno = configuracao["turno"]
-        self.urna.homologada = True
+        self.urna.configurada = True
 
     def cadastra_candidato(self):
+        #if not self.controlador_chapa.chapas:
+        #    self.controlador_candidato.tela_candidato.alert(f"{'=' * 8} CADASTRE UMA CHAPA PRIMEIRO {'=' * 8}")
+        #    return
+            
         self.controlador_candidato.inicia_tela()
     
     def cadastra_chapa(self):
@@ -75,11 +80,8 @@ class ControladorUrna(AbstractControlador):
     def inicia_sessao(self):
         self.inicia_tela()
 
-    def encerra_sessao(self):
-        pass
-
     def inicia_tela(self):
-        acoes = {1: self.configura, 2: self.cadastra_candidato, 3: self.cadastra_chapa, 4: self.cadastra_eleitor, 5: self.vota, 6: self.gera_relatorio_votos}
+        acoes = {1: self.configura, 2: self.cadastra_candidato, 3: self.cadastra_chapa, 4: self.cadastra_eleitor, 5: self.vota, 6: self.gera_relatorio_votos, 7: exit}
 
         while True:
             acoes[self.tela_urna.exibe_opcoes()]()

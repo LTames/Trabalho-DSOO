@@ -11,8 +11,9 @@ class TelaUrna(AbstractTela):
         print('4 - Cadastrar Eleitor')
         print('5 - Votar')
         print('6 - Gerar Relatório dos Votos')
+        print('7 - Encerrar Sessão')
 
-        opcao = self.get_int_input("Digite a opção: ", 6)
+        opcao = self.get_int_input("Digite a opção: ", 7)
         return opcao
 
     def exibe_relatorio(self, dados_relatorio):
