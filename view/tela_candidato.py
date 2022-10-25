@@ -28,9 +28,10 @@ class TelaCandidato(AbstractTela):
         nome_candidato = input("Digite o nome do candidato: ")
         email_candidato = input("Digite o e-mail do candidato: ")
         endereco_candidato = input("Digite o endereço do candidato: ")
-        tipo_eleitor = self.get_tipo_eleitor()
         numero_candidato = self.get_int_input(
             "Digite o número do candidato: ", 98)
+
+        tipo_eleitor = self.get_tipo_eleitor()
         chapa = self.get_chapa(chapas_cadastradas)
         cargo = self.get_cargo_candidato()
 
@@ -38,8 +39,8 @@ class TelaCandidato(AbstractTela):
                 "nome": nome_candidato,
                 "email": email_candidato,
                 "endereco": endereco_candidato,
-                "tipo_eleitor": tipo_eleitor,
                 "numero": numero_candidato,
+                "tipo_eleitor": tipo_eleitor,
                 "chapa": chapa,
                 "cargo": cargo}
 
@@ -59,4 +60,5 @@ class TelaCandidato(AbstractTela):
         print('Selecione a atual chapa do candidato')
         for i, chapa in enumerate(chapas):
             print(f'{i + 1} - {chapa.nome_chapa} ({chapa.num_chapa})')
-        return self.get_int_input('Chapa: ', len(chapas))
+
+        return self.get_int_input('Chapa: ', len(chapas)) - 1
