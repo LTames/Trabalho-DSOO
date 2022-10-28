@@ -59,6 +59,12 @@ class ControladorUrna(AbstractControlador):
     def cadastra_eleitor(self):
         self.controlador_eleitor.inicia_tela()
 
+    def fetch_chapa(self):
+        return self.controlador_chapa.seleciona_chapa()
+
+    def post_candidato(self, candidato: 'Candidato'):
+        self.controlador_chapa.add_candidato(candidato)
+
     def vota(self):
         pass
 

@@ -8,49 +8,49 @@ class Urna():
         self.__configurada = False
 
     @property
-    def votos(self):
+    def votos(self) -> list['Voto']:
         return self.__votos
 
     @property
-    def eleitores(self):
+    def eleitores(self) -> list['Eleitor']:
         return self.__eleitores
 
     @property
-    def max_eleitores(self):
+    def max_eleitores(self) -> int:
         return self.__max_eleitores
 
     @property
-    def max_candidatos(self):
+    def max_candidatos(self) -> int:
         return self.__max_candidatos
 
     @property
-    def turno(self):
+    def turno(self) -> int:
         return self.__turno
 
     @property
-    def configurada(self):
+    def configurada(self) -> bool:
         return self.__configurada
 
     @votos.setter
-    def votos(self, votos):
+    def votos(self, votos) -> None:
         self.__votos = votos
 
     @eleitores.setter
-    def eleitores(self, eleitores):
+    def eleitores(self, eleitores) -> None:
         self.__eleitores = eleitores
 
     @max_eleitores.setter
-    def max_eleitores(self, max_eleitores):
+    def max_eleitores(self, max_eleitores) -> None:
         self.__max_eleitores = max_eleitores
 
     @max_candidatos.setter
-    def max_candidatos(self, max_candidatos):
+    def max_candidatos(self, max_candidatos) -> None:
         self.__max_candidatos = max_candidatos
 
     @turno.setter
-    def turno(self, turno):
+    def turno(self, turno) -> None:
         self.__turno = turno
 
     @configurada.setter
-    def configurada(self, configurada):
+    def configurada(self, configurada) -> None:
         self.__configurada = configurada

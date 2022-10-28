@@ -4,7 +4,7 @@ from model.candidato import Candidato, CargoCandidato, TipoEleitor
 
 
 class ControladorCandidato(AbstractControlador):
-    def __init__(self, controlador_urna) -> None:
+    def __init__(self, controlador_urna: 'ControladorUrna') -> None:
         self.__candidatos = []
         self.__tela_candidato = TelaCandidato()
         self.__controlador_urna = controlador_urna
@@ -32,27 +32,21 @@ class ControladorCandidato(AbstractControlador):
                 "Candidato não existente. Verifique seu número e tente novamente")
 
     def adiciona_candidato(self):
-        if len(self.candidatos) == self.controlador_urna.urna.max_eleitores:
+        if len(self.candidatos) == self.controlador_urna.urna.max_eleitores: #fix
             raise IndexError
 
         try:
-            chapas_cadastradas = self.controlador_urna.controlador_chapa.chapas
-            dados_candidato = self.tela_candidato.get_dados_candidato(chapas_cadastradas)
+            dados_candidato = self.tela_candidato.get_dados_candidato()
 
             for candidato in self.candidatos:
                 if dados_candidato["numero"] == candidato.numero:
                     raise ValueError
 
-            self.candidatos.append(Candidato(dados_candidato["cpf"],
-                                             dados_candidato["nome"],
-                                             dados_candidato["email"],
-                                             dados_candidato["endereco"],
-                                             TipoEleitor(
-                                                 dados_candidato["tipo_eleitor"]),
-                                             dados_candidato["numero"],
-                                             chapas_cadastradas[dados_candidato["chapa"]],
-                                             CargoCandidato(dados_candidato["cargo"])))
+            dados_candidato["chapa"] = self.controlador_urna.fetch_chapa()
+            candidato = Candidato(dados_candidato["cpf"], dados_candidato["nome"], dados_candidato["email"], dados_candidato["endereco"], TipoEleitor(dados_candidato["tipo_eleitor"]), dados_candidato["numero"], dados_candidato["chapa"], CargoCandidato(dados_candidato["cargo"]))
 
+            self.candidatos.append(candidato)
+            self.controlador_urna.post_candidato(candidato)
         except ValueError:
             self.tela_candidato.alert("Candidato já cadastrado com esse número!")
         except IndexError:
@@ -80,6 +74,8 @@ class ControladorCandidato(AbstractControlador):
             return
 
         dados_atualizados = self.tela_candidato.get_dados_candidato()
+        dados_atualizados["chapa"] = self.controlador_urna.fetch_chapa()
+
         candidato.cpf = dados_atualizados["cpf"]
         candidato.nome = dados_atualizados["nome"]
         candidato.email = dados_atualizados["email"]
@@ -100,8 +96,8 @@ class ControladorCandidato(AbstractControlador):
                                                  "email": candidato.email,
                                                  "endereco": candidato.endereco,
                                                  "numero": candidato.numero,
-                                                 "chapa": candidato.chapa.num_chapa,
-                                                 "cargo": candidato.cargo})
+                                                 "chapa": candidato.chapa.nome_chapa,
+                                                 "cargo": candidato.cargo.value[1]})
 
     def inicia_tela(self) -> None:
         acoes = {1: self.altera_candidato, 2: self.adiciona_candidato,

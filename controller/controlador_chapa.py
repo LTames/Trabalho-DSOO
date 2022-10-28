@@ -21,8 +21,10 @@ class ControladorChapa(AbstractControlador):
     def chapas(self) -> list:
         return self.__chapas
 
-    def seleciona_chapa(self, num_chapa):
+    def seleciona_chapa(self):
         try:
+            num_chapa = self.tela_chapa.get_num_chapa()
+
             for chapa in self.chapas:
                 if chapa.num_chapa == num_chapa:
                     return chapa
@@ -30,8 +32,7 @@ class ControladorChapa(AbstractControlador):
         except ValueError:
             self.tela_chapa.alert(
                 "Chapa não existente. Verifique seu número e tente novamente")
-    
-    
+
     def adiciona_chapa(self):
         try:
             dados_chapa = self.tela_chapa.get_dados_chapa()
@@ -40,7 +41,7 @@ class ControladorChapa(AbstractControlador):
                     raise ValueError
 
             self.chapas.append(Chapa(dados_chapa["num_chapa"],
-                                     dados_chapa["nome_chapa"],))
+                                     dados_chapa["nome_chapa"]))
 
         except ValueError:
             self.tela_chapa.alert("Chapa já cadastrada com esse número")
@@ -49,7 +50,7 @@ class ControladorChapa(AbstractControlador):
         if not self.chapas:
             self.tela_chapa.alert("Não há chapas cadastradas")
             return
-        chapa = self.seleciona_chapa(self.tela_chapa.get_num_chapa())
+        chapa = self.seleciona_chapa()
         if not chapa:
             return
         self.chapas.remove(chapa)
@@ -58,7 +59,7 @@ class ControladorChapa(AbstractControlador):
         if not self.chapas:
             self.tela_chapa.alert('Não há chapas cadastradas')
             return
-        chapa = self.seleciona_chapa(self.tela_chapa.get_num_chapa())
+        chapa = self.seleciona_chapa()
         if not chapa:
             return
         
@@ -66,16 +67,18 @@ class ControladorChapa(AbstractControlador):
         chapa.num_chapa = dados_atualizados["num_chapa"]
         chapa.nome_chapa = dados_atualizados["nome_chapa"]
 
-        
-        
-
     def lista_chapas(self):
         if not self.chapas:
             self.tela_chapa.alert('Não há chapas cadastradas')
             return
         for chapa in self.chapas:
+            print(chapa.candidatos)
             self.tela_chapa.exibe_chapa({'num_chapa': chapa.num_chapa, 'nome_chapa': chapa.nome_chapa})
-        
+
+    def add_candidato(self, candidato: 'Candidato'):
+        for chapa in self.chapas:
+            if chapa == candidato.chapa:
+                chapa.candidatos.append(candidato)
 
     def inicia_tela(self) -> None:
         acoes = {1: self.altera_chapa, 2: self.adiciona_chapa,

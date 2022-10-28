@@ -3,7 +3,7 @@ from abstracts.abstract_tela import AbstractTela
 
 class TelaUrna(AbstractTela):
     def exibe_opcoes(self):
-        print(f'{"=" * 8} Eleições 2022 {"=" * 8}')
+        print(f'--- Eleições 2022 ---')
         print('Escolha uma das opções abaixo')
         print('1 - Configurar Urna')
         print('2 - Cadastrar Candidato')
@@ -23,7 +23,7 @@ class TelaUrna(AbstractTela):
         pass
 
     def get_dados_configuracao(self):
-        print(f'{"=" * 8} CONFIGURAÇÃO DA URNA {"=" * 8}')
+        print(f'--- CONFIGURAÇÃO DA URNA ---')
         max_eleitores = self.get_int_input(
             "Digite o número máximo de eleitores: ")
         max_candidatos = self.get_int_input(

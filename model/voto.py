@@ -3,9 +3,9 @@ class Voto():
         self.__num_candidato = num_candidato
 
     @property
-    def num_candidato(self):
+    def num_candidato(self) -> int:
         return self.__num_candidato
 
     @num_candidato.setter
-    def num_candidato(self, num_candidato):
+    def num_candidato(self, num_candidato) -> None:
         self.__num_candidato = num_candidato

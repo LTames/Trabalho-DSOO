@@ -3,7 +3,7 @@ from abstracts.abstract_tela import AbstractTela
 
 class TelaChapa(AbstractTela):
     def exibe_opcoes(self) -> int:
-        print(f'{"=" * 8} CADASTRO DE CHAPA {"=" * 8}')
+        print(f'--- CADASTRO DE CHAPA ---')
         print('Escolha uma das opções abaixo')
         print('1 - Alterar Chapa')
         print('2 - Incluir Chapa')
@@ -14,11 +14,11 @@ class TelaChapa(AbstractTela):
         return self.get_int_input("Digite um número: ", 5)
 
     def exibe_chapa(self, dados_chapa: dict) -> None:
-        print(f'{"=" * 8} CHAPA: {dados_chapa["nome_chapa"]} {"=" * 8}')
+        print(f'--- CHAPA: {dados_chapa["nome_chapa"]} ---')
         print(f'num_chapa: {dados_chapa["num_chapa"]}')
         
     def get_dados_chapa(self) -> dict:
-        print(f'{"=" * 8} DADOS DA CHAPA {"=" * 8}')
+        print(f'--- DADOS DA CHAPA ---')
         num_chapa = input("Digite o número da chapa: ")
         nome_chapa = input("Digite o nome da chapa: ")
 
