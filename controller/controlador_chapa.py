@@ -1,3 +1,4 @@
+from multiprocessing.sharedctypes import Value
 from abstracts.abstract_controlador import AbstractControlador
 from view.tela_chapa import TelaChapa
 from model.chapa import Chapa
@@ -69,9 +70,20 @@ class ControladorChapa(AbstractControlador):
             self.tela_chapa.exibe_chapa({'num_chapa': chapa.num_chapa, 'nome_chapa': chapa.nome_chapa, 'candidatos': chapa.candidatos})
 
     def add_candidato(self, candidato: 'Candidato'):
+        try:
+            if candidato in self.chapas:
+                raise ValueError
+            
+            for chapa in self.chapas:
+                if chapa == candidato.chapa:
+                    chapa.candidatos.append(candidato)
+        except ValueError:
+            self.tela_chapa.alert('Candidato já está cadastrado na chapa')
+
+    def remove_candidato(self, candidato: 'Candidato'):
         for chapa in self.chapas:
             if chapa == candidato.chapa:
-                chapa.candidatos.append(candidato)
+                chapa.candidatos.remove(candidato)
 
     def inicia_tela(self) -> None:
         acoes = {1: self.altera_chapa, 2: self.adiciona_chapa,
