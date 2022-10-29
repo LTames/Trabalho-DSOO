@@ -21,10 +21,11 @@ class ControladorCandidato(AbstractControlador):
     def controlador_urna(self):
         return self.__controlador_urna
 
-    def seleciona_candidato(self, numero):
+    def seleciona_candidato(self):
         try:
+            num_candidato = self.tela_candidato.get_num_candidato()
             for candidato in self.candidatos:
-                if candidato.numero == numero:
+                if candidato.numero == num_candidato:
                     return candidato
             raise ValueError
         except ValueError:
@@ -32,49 +33,49 @@ class ControladorCandidato(AbstractControlador):
                 "Candidato não existente. Verifique seu número e tente novamente")
 
     def adiciona_candidato(self):
-        if len(self.candidatos) == self.controlador_urna.urna.max_eleitores: #fix
-            raise IndexError
+        if len(self.candidatos) == self.controlador_urna.urna.max_eleitores: 
+            raise Exception('Número máximo de candidatos atingido!') #new exception
 
         try:
             dados_candidato = self.tela_candidato.get_dados_candidato()
-
             for candidato in self.candidatos:
                 if dados_candidato["numero"] == candidato.numero:
                     raise ValueError
 
             dados_candidato["chapa"] = self.controlador_urna.fetch_chapa()
+
             candidato = Candidato(dados_candidato["cpf"], dados_candidato["nome"], dados_candidato["email"], dados_candidato["endereco"], TipoEleitor(dados_candidato["tipo_eleitor"]), dados_candidato["numero"], dados_candidato["chapa"], CargoCandidato(dados_candidato["cargo"]))
 
             self.candidatos.append(candidato)
-            self.controlador_urna.post_candidato(candidato)
+            self.controlador_urna.post_candidato_chapa(candidato)
         except ValueError:
             self.tela_candidato.alert("Candidato já cadastrado com esse número!")
-        except IndexError:
-            self.tela_candidato.alert("Número máximo de candidatos atingido!")
 
     def deleta_candidato(self) -> None:
         if not self.candidatos:
             self.tela_candidato.alert("Não há candidatos cadastrados")
             return
 
-        candidato = self.seleciona_candidato(
-            self.tela_candidato.get_num_candidato())
+        candidato = self.seleciona_candidato()
         if not candidato:
             return
+        
+        self.controlador_urna.delete_candidato_chapa(candidato)
         self.candidatos.remove(candidato)
 
     def altera_candidato(self) -> None:
         if not self.candidatos:
             self.tela_candidato.alert("Não há candidatos cadastrados")
             return
-
-        candidato = self.seleciona_candidato(
-            self.tela_candidato.get_num_candidato())
+        candidato = self.seleciona_candidato()
         if not candidato:
             return
 
         dados_atualizados = self.tela_candidato.get_dados_candidato()
         dados_atualizados["chapa"] = self.controlador_urna.fetch_chapa()
+        
+        if dados_atualizados["chapa"] != candidato.chapa:
+            self.controlador_urna.delete_candidato_chapa(candidato)
 
         candidato.cpf = dados_atualizados["cpf"]
         candidato.nome = dados_atualizados["nome"]
@@ -84,6 +85,9 @@ class ControladorCandidato(AbstractControlador):
         candidato.numero = dados_atualizados["numero"]
         candidato.chapa = dados_atualizados["chapa"]
         candidato.cargo = dados_atualizados["cargo"]
+
+        self.controlador_urna.post_candidato_chapa(candidato)
+        
 
     def lista_candidatos(self) -> None:
         if not self.candidatos:

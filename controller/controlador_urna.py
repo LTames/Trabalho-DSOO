@@ -62,8 +62,11 @@ class ControladorUrna(AbstractControlador):
     def fetch_chapa(self):
         return self.controlador_chapa.seleciona_chapa()
 
-    def post_candidato(self, candidato: 'Candidato'):
+    def post_candidato_chapa(self, candidato: 'Candidato'):
         self.controlador_chapa.add_candidato(candidato)
+
+    def delete_candidato_chapa(self, candidato: 'Candidato'):
+        self.controlador_chapa.remove_candidato(candidato)
 
     def vota(self):
         pass

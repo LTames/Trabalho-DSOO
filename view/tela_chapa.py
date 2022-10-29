@@ -19,7 +19,7 @@ class TelaChapa(AbstractTela):
         
     def get_dados_chapa(self) -> dict:
         print(f'--- DADOS DA CHAPA ---')
-        num_chapa = input("Digite o número da chapa: ")
+        num_chapa = int(input("Digite o número da chapa: "))
         nome_chapa = input("Digite o nome da chapa: ")
 
         return {"num_chapa": num_chapa,
