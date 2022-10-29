@@ -22,16 +22,10 @@ class ControladorChapa(AbstractControlador):
         return self.__chapas
 
     def seleciona_chapa(self):
-        try:
-            num_chapa = self.tela_chapa.get_num_chapa()
-
-            for chapa in self.chapas:
-                if chapa.num_chapa == num_chapa:
-                    return chapa
-            raise ValueError
-        except ValueError:
-            self.tela_chapa.alert(
-                "Chapa não existente. Verifique seu número e tente novamente")
+        indice_chapa = self.tela_chapa.get_chapa(self.chapas)
+        chapa = self.chapas[indice_chapa]
+        return chapa
+        
 
     def adiciona_chapa(self):
         try:
@@ -72,8 +66,7 @@ class ControladorChapa(AbstractControlador):
             self.tela_chapa.alert('Não há chapas cadastradas')
             return
         for chapa in self.chapas:
-            print(chapa.candidatos)
-            self.tela_chapa.exibe_chapa({'num_chapa': chapa.num_chapa, 'nome_chapa': chapa.nome_chapa})
+            self.tela_chapa.exibe_chapa({'num_chapa': chapa.num_chapa, 'nome_chapa': chapa.nome_chapa, 'candidatos': chapa.candidatos})
 
     def add_candidato(self, candidato: 'Candidato'):
         for chapa in self.chapas:
