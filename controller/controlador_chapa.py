@@ -26,7 +26,6 @@ class ControladorChapa(AbstractControlador):
         indice_chapa = self.tela_chapa.get_chapa(self.chapas)
         chapa = self.chapas[indice_chapa]
         return chapa
-        
 
     def adiciona_chapa(self):
         try:
