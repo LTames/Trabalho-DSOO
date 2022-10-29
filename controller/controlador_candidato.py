@@ -81,10 +81,10 @@ class ControladorCandidato(AbstractControlador):
         candidato.nome = dados_atualizados["nome"]
         candidato.email = dados_atualizados["email"]
         candidato.endereco = dados_atualizados["endereco"]
-        candidato.tipo_eleitor = dados_atualizados["tipo_eleitor"]
+        candidato.tipo_eleitor = TipoEleitor(dados_atualizados["tipo_eleitor"])
         candidato.numero = dados_atualizados["numero"]
         candidato.chapa = dados_atualizados["chapa"]
-        candidato.cargo = dados_atualizados["cargo"]
+        candidato.cargo = CargoCandidato(dados_atualizados["cargo"])
 
         self.controlador_urna.post_candidato_chapa(candidato)
         

@@ -69,15 +69,11 @@ class ControladorChapa(AbstractControlador):
             self.tela_chapa.exibe_chapa({'num_chapa': chapa.num_chapa, 'nome_chapa': chapa.nome_chapa, 'candidatos': chapa.candidatos})
 
     def add_candidato(self, candidato: 'Candidato'):
-        try:
-            if candidato in self.chapas:
-                raise ValueError
-            
-            for chapa in self.chapas:
-                if chapa == candidato.chapa:
-                    chapa.candidatos.append(candidato)
-        except ValueError:
-            self.tela_chapa.alert('Candidato já está cadastrado na chapa')
+        for chapa in self.chapas:
+            if candidato in chapa.candidatos:
+                return
+            if chapa == candidato.chapa:
+                chapa.candidatos.append(candidato)
 
     def remove_candidato(self, candidato: 'Candidato'):
         for chapa in self.chapas:
