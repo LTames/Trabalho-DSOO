@@ -1,3 +1,6 @@
+from model.voto import Voto
+
+
 class Urna():
     def __init__(self):
         self.__votos = []

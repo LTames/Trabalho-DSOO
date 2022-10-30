@@ -21,9 +21,10 @@ class ControladorCandidato(AbstractControlador):
     def controlador_urna(self):
         return self.__controlador_urna
 
-    def seleciona_candidato(self):
+    def seleciona_candidato(self, num_candidato: int = None):
         try:
-            num_candidato = self.tela_candidato.get_num_candidato()
+            if not num_candidato:
+                num_candidato = self.tela_candidato.get_num_candidato()
             for candidato in self.candidatos:
                 if candidato.numero == num_candidato:
                     return candidato

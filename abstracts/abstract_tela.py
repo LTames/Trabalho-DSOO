@@ -10,10 +10,14 @@ class AbstractTela(ABC):
     def alert(self, msg: str) -> None:
         print(f"{'=' * 8} {msg} {'=' * 8}")
 
-    def get_int_input(self, input_msg: str, max_int: int = None):
+    def get_int_input(self, input_msg: str, max_int: int = None, accept_blank_input: bool = False):
         while True:
+            entrada = input(input_msg)
+            if accept_blank_input and (not entrada.strip()):
+                return None
+
             try:
-                entrada = int(input(input_msg))
+                entrada = int(entrada)
 
                 if max_int:
                     if not (0 < entrada <= max_int):

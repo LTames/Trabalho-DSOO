@@ -21,7 +21,7 @@ class ControladorEleitor(AbstractControlador):
     def eleitores(self) -> list:
         return self.__eleitores
 
-    def seleciona_eleitor(self, cpf):
+    def seleciona_eleitor(self, cpf: int = None):
         try:
             for eleitor in self.eleitores:
                 if eleitor.cpf == cpf:
