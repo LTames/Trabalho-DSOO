@@ -1,6 +1,7 @@
+from model.tipo_eleitor import TipoEleitor
 from abstracts.abstract_controlador import AbstractControlador
 from view.tela_eleitor import TelaEleitor
-from model.eleitor import Eleitor
+from model.eleitor import Eleitor,TipoEleitor
 
 
 class ControladorEleitor(AbstractControlador):
@@ -44,8 +45,8 @@ class ControladorEleitor(AbstractControlador):
                                           dados_eleitor["nome"],
                                           dados_eleitor["email"],
                                           dados_eleitor["endereco"],
-                                          dados_eleitor["tipo_eleitor"]))
-
+                                          TipoEleitor(dados_eleitor["tipo_eleitor"])))
+                                          
         except ValueError:
             self.tela_eleitor.alert("Eleitor já cadastrado com esse CPF")
 
@@ -58,20 +59,20 @@ class ControladorEleitor(AbstractControlador):
             return
         self.eleitores.remove(eleitor)
     
-    def altera_eleitor(self):
+    def altera_eleitor(self) -> None:
         if not self.eleitores:
             self.tela_eleitor.alert('Não há eleitores cadastrados')
             return
-        eleitor = self.seleciona_eleitor(self.tela_eleitor.get_cpf_eleitor())
+        eleitor = self.seleciona_eleitor()
         if not eleitor:
             return
         
-        dados_atualizados = self.tela_eleitor.get_cpf_eleitor()
+        dados_atualizados = self.tela_eleitor.get_dados_eleitor()
         eleitor.cpf = dados_atualizados["cpf"]
         eleitor.nome = dados_atualizados["nome"]
         eleitor.email = dados_atualizados["email"]
         eleitor.endereco = dados_atualizados["endereco"]
-        eleitor.tipo_eleitor = dados_atualizados["tipo_eleitor"]
+        eleitor.tipo_eleitor = TipoEleitor(dados_atualizados["tipo_eleitor"])
 
     def lista_eleitores(self):
         if not self.eleitores:
@@ -80,7 +81,7 @@ class ControladorEleitor(AbstractControlador):
         for eleitor in self.eleitores:
             self.tela_eleitor.exibe_eleitor({'cpf': eleitor.cpf, 'nome': eleitor.nome,
                                              'email': eleitor.email, 'endereco': eleitor.endereco,
-                                             'tipo_eleitor': eleitor.tipo_eleitor})
+                                             'tipo_eleitor': eleitor.tipo_eleitor.value[1]})
 
     def inicia_tela(self) -> None:
         acoes = {1: self.altera_eleitor, 2: self.adiciona_eleitor,

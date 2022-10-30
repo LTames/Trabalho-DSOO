@@ -1,3 +1,4 @@
+from model import tipo_eleitor
 from abstracts.abstract_tela import AbstractTela
 
 
@@ -22,18 +23,18 @@ class TelaEleitor(AbstractTela):
 
     def get_dados_eleitor(self) -> dict:
         print(f'--- DADOS DO ELEITOR ---')
-        cpf_eleitor = int(input("Digite o CPF do eleitor: "))
+        cpf_eleitor = input("Digite o CPF do eleitor: ")
         nome_eleitor = input("Digite o nome do eleitor: ")
         email_eleitor = input("Digite o e-mail do eleitor: ")
         endereco_eleitor = input("Digite o endereço do eleitor: ")
-        # tipo_eleitor
+        tipo_eleitor = self.get_tipo_eleitor()
 
         return {"cpf": cpf_eleitor,
                 "nome": nome_eleitor,
                 "email": email_eleitor,
                 "endereco": endereco_eleitor,
-                "tipo_eleitor": None}
+                "tipo_eleitor": tipo_eleitor}
 
-    def get_cpf_eleitor(self) -> int:
-        cpf = self.get_int_input("Digite o cpf do eleitor: ")
+    def get_cpf_eleitor(self) -> str:
+        cpf = input("Digite o cpf do eleitor: ")
         return cpf
