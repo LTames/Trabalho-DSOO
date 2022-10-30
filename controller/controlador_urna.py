@@ -1,8 +1,11 @@
 from logging import exception
-from controller.controlador_candidato import ControladorCandidato
+
+from Trabalho-DSOO.model import candidato
+
+from controller.controlador_candidato import ControladorCandidato, CargoCandidato
 from controller.controlador_chapa import ControladorChapa
 from controller.controlador_eleitor import ControladorEleitor
-from model.urna import Urna
+from model.urna import Urna, Voto
 from view.tela_urna import TelaUrna
 from abstracts.abstract_controlador import AbstractControlador
 from sys import exit
@@ -96,19 +99,25 @@ class ControladorUrna(AbstractControlador):
             self.tela_urna.alert(e)
 
     def vota(self):
-        candidatos = self.controlador_candidato.separa_candidatos_por_cargo()
-        votos = self.tela_urna.get_dados_votos(candidatos)
+        for cargo in CargoCandidato:
+            voto = self.tela_urna.get_voto(cargo.value[1])
 
-    def inclui_votos(self):
-        pass
+            while True:
+                if voto['confirma'] == 1:
+                    if voto['num_candidato'] is not None:
+                        candidato = self.fetch_candidato
+
+                        self.urna.votos.append(Voto(voto['num_candidato'], cargo))
+                    else:
+                        self.urna.votos.append(Voto(0, cargo))
+                    break                        
+                elif voto['confirma'] == 2:
+                    voto = self.tela_urna.get_voto(cargo.value[1])
 
     def gera_relatorio_votos(self):
         pass
 
     def gera_resultado(self):
-        pass
-
-    def corrige_utlimo_voto(self):
         pass
 
     def inicia_sessao(self):
