@@ -2,8 +2,9 @@ from model.tipo_eleitor import TipoEleitor
 from abstracts.abstract_controlador import AbstractControlador
 from view.tela_eleitor import TelaEleitor
 from model.eleitor import Eleitor,TipoEleitor
-
-
+from exceptions.max_eleitores import MaxEleitoresException
+from exceptions.eleitor_inexistente import EleitorInexistenteException
+from exceptions.eleitor_ja_cadastrado import EleitorJaCadastradoException
 class ControladorEleitor(AbstractControlador):
     def __init__(self, controlador_urna) -> None:
         self.__controlador_urna = controlador_urna
@@ -29,17 +30,19 @@ class ControladorEleitor(AbstractControlador):
             for eleitor in self.eleitores:
                 if eleitor.cpf == cpf:
                     return eleitor
-            raise ValueError
-        except ValueError:
-            self.tela_eleitor.alert(
-                "Eleitor não existente. Verifique seu cpf e tente novamente")
+            raise EleitorInexistenteException
+        except Exception as e:
+            self.tela_eleitor.alert(e)
     
     def adiciona_eleitor(self):
+        if len(self.eleitores) == self.controlador_urna.urna.max_eleitores: 
+            raise MaxEleitoresException
+        
         try:
             dados_eleitor = self.tela_eleitor.get_dados_eleitor()
             for eleitor in self.eleitores:
                 if dados_eleitor["cpf"] == eleitor.cpf:
-                    raise ValueError
+                    raise EleitorJaCadastradoException
 
             self.eleitores.append(Eleitor(dados_eleitor["cpf"],
                                           dados_eleitor["nome"],
@@ -47,8 +50,8 @@ class ControladorEleitor(AbstractControlador):
                                           dados_eleitor["endereco"],
                                           TipoEleitor(dados_eleitor["tipo_eleitor"])))
                                           
-        except ValueError:
-            self.tela_eleitor.alert("Eleitor já cadastrado com esse CPF")
+        except Exception as e:
+            self.tela_eleitor.alert(e)
 
     def deleta_eleitor(self):
         if not self.eleitores:
@@ -82,6 +85,21 @@ class ControladorEleitor(AbstractControlador):
             self.tela_eleitor.exibe_eleitor({'cpf': eleitor.cpf, 'nome': eleitor.nome,
                                              'email': eleitor.email, 'endereco': eleitor.endereco,
                                              'tipo_eleitor': eleitor.tipo_eleitor.value[1]})
+
+    def add_candidato_eleitores(self, candidato: 'Candidato'):
+        try:
+            if candidato in self.eleitores:
+                return
+
+            for eleitor in self.eleitores:
+                if eleitor.cpf == candidato.cpf:
+                    raise EleitorJaCadastradoException
+            self.eleitores.append(candidato)
+        except Exception as e:
+            self.tela_eleitor.alert(e)
+
+    def remove_candidato_eleitores(self, candidato: 'Candidato'):
+        self.eleitores.remove(candidato)
 
     def inicia_tela(self) -> None:
         acoes = {1: self.altera_eleitor, 2: self.adiciona_eleitor,

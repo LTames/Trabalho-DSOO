@@ -2,6 +2,7 @@ from multiprocessing.sharedctypes import Value
 from abstracts.abstract_controlador import AbstractControlador
 from view.tela_chapa import TelaChapa
 from model.chapa import Chapa
+from exceptions.chapa_ja_cadastrada import ChapaJaCadastradaException
 
 
 class ControladorChapa(AbstractControlador):
@@ -32,13 +33,13 @@ class ControladorChapa(AbstractControlador):
             dados_chapa = self.tela_chapa.get_dados_chapa()
             for chapa in self.chapas:
                 if dados_chapa["num_chapa"] == chapa.num_chapa:
-                    raise ValueError
+                    raise ChapaJaCadastradaException
 
             self.chapas.append(Chapa(dados_chapa["num_chapa"],
                                      dados_chapa["nome_chapa"]))
 
-        except ValueError:
-            self.tela_chapa.alert("Chapa já cadastrada com esse número")
+        except Exception as e:
+            self.tela_chapa.alert(e)
 
     def deleta_chapa(self) -> None:
         if not self.chapas:
@@ -68,14 +69,14 @@ class ControladorChapa(AbstractControlador):
         for chapa in self.chapas:
             self.tela_chapa.exibe_chapa({'num_chapa': chapa.num_chapa, 'nome_chapa': chapa.nome_chapa, 'candidatos': chapa.candidatos})
 
-    def add_candidato(self, candidato: 'Candidato'):
+    def add_candidato_chapa(self, candidato: 'Candidato'):
         for chapa in self.chapas:
             if candidato in chapa.candidatos:
                 return
             if chapa == candidato.chapa:
                 chapa.candidatos.append(candidato)
 
-    def remove_candidato(self, candidato: 'Candidato'):
+    def remove_candidato_chapa(self, candidato: 'Candidato'):
         for chapa in self.chapas:
             if chapa == candidato.chapa:
                 chapa.candidatos.remove(candidato)

@@ -1,6 +1,9 @@
 from abstracts.abstract_controlador import AbstractControlador
 from view.tela_candidato import TelaCandidato
 from model.candidato import Candidato, CargoCandidato, TipoEleitor
+from exceptions.max_candidatos import MaxCandidatosException
+from exceptions.candidato_ja_cadastrado import CandidatoJaCadastradoException
+from exceptions.candidato_inexistente import CandidatoInexistenteException
 
 
 class ControladorCandidato(AbstractControlador):
@@ -31,29 +34,29 @@ class ControladorCandidato(AbstractControlador):
                         return candidato
                 elif candidato.numero == num_candidato:
                     return candidato
-            raise ValueError
-        except ValueError:
-            self.tela_candidato.alert(
-                "Candidato não existente.")
+            raise CandidatoInexistenteException
+        except Exception as e:
+            self.tela_candidato.alert(e)
 
     def adiciona_candidato(self):
-        if len(self.candidatos) == self.controlador_urna.urna.max_eleitores: 
-            raise Exception('Número máximo de candidatos atingido!') #new exception
+        if len(self.candidatos) == self.controlador_urna.urna.max_candidatos: 
+            raise MaxCandidatosException
 
         try:
             dados_candidato = self.tela_candidato.get_dados_candidato()
             for candidato in self.candidatos:
-                if dados_candidato["numero"] == candidato.numero:
-                    raise ValueError
+                if dados_candidato["numero"] == candidato.numero or dados_candidato['cpf'] == candidato.cpf:
+                    raise CandidatoJaCadastradoException
 
             dados_candidato["chapa"] = self.controlador_urna.fetch_chapa()
 
             candidato = Candidato(dados_candidato["cpf"], dados_candidato["nome"], dados_candidato["email"], dados_candidato["endereco"], TipoEleitor(dados_candidato["tipo_eleitor"]), dados_candidato["numero"], dados_candidato["chapa"], CargoCandidato(dados_candidato["cargo"]))
 
-            self.candidatos.append(candidato)
             self.controlador_urna.post_candidato_chapa(candidato)
-        except ValueError:
-            self.tela_candidato.alert("Candidato já cadastrado com esse número!")
+            self.controlador_urna.post_candidato_eleitores(candidato)
+            self.candidatos.append(candidato)
+        except Exception as e:
+            self.tela_candidato.alert(e)
 
     def deleta_candidato(self) -> None:
         if not self.candidatos:
@@ -65,6 +68,7 @@ class ControladorCandidato(AbstractControlador):
             return
         
         self.controlador_urna.delete_candidato_chapa(candidato)
+        self.controlador_urna.delete_candidato_eleitores(candidato)
         self.candidatos.remove(candidato)
 
     def altera_candidato(self) -> None:
@@ -113,7 +117,7 @@ class ControladorCandidato(AbstractControlador):
         pro_reitores_pesquisa = []
         
         for candidato in self.candidatos:
-            dados_candidato = {'nome': candidato.nome, 'numero': candidato.numero, 'chapa': candidato.chapa.nome_chapa}
+            dados_candidato = {'nome': candidato.nome, 'numero': candidato.numero}
             
             match candidato.cargo:
                 case CargoCandidato.REITOR:
@@ -125,7 +129,7 @@ class ControladorCandidato(AbstractControlador):
                 case CargoCandidato.PRO_REITOR_PESQUISA:
                     pro_reitores_pesquisa.append(dados_candidato)
 
-        return {'reitores': reitores, 'pro_reitores_extensao': pro_reitores_extensao, 'pro_reitores_graduacao': pro_reitores_graduacao, 'pro_reitores_pesquisa': pro_reitores_pesquisa}
+        return {'reitor': reitores, 'pro_reitor_extensao': pro_reitores_extensao, 'pro_reitor_graduacao': pro_reitores_graduacao, 'pro_reitor_pesquisa': pro_reitores_pesquisa}
 
     def inicia_tela(self) -> None:
         acoes = {1: self.altera_candidato, 2: self.adiciona_candidato,

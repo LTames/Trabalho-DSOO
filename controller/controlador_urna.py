@@ -1,6 +1,6 @@
 from controller.controlador_candidato import ControladorCandidato, CargoCandidato
 from controller.controlador_chapa import ControladorChapa
-from controller.controlador_eleitor import ControladorEleitor
+from controller.controlador_eleitor import ControladorEleitor, TipoEleitor
 from model.urna import Urna, Voto
 from view.tela_urna import TelaUrna
 from abstracts.abstract_controlador import AbstractControlador
@@ -53,9 +53,9 @@ class ControladorUrna(AbstractControlador):
     def cadastra_candidato(self):
         try:
             if not self.controlador_chapa.chapas:
-                raise ChapaNaoCadastradaException()
+                raise ChapaNaoCadastradaException
             if not self.urna.configurada:
-                raise UrnaNaoConfiguradaException()
+                raise UrnaNaoConfiguradaException
 
             self.controlador_candidato.inicia_tela()
         except Exception as e:
@@ -67,7 +67,7 @@ class ControladorUrna(AbstractControlador):
     def cadastra_eleitor(self):
         try:
             if not self.urna.configurada:
-                raise UrnaNaoConfiguradaException()
+                raise UrnaNaoConfiguradaException
 
             self.controlador_eleitor.inicia_tela()
         except Exception as e:
@@ -83,10 +83,16 @@ class ControladorUrna(AbstractControlador):
         return self.controlador_candidato.seleciona_candidato(num_candidato, cargo)
 
     def post_candidato_chapa(self, candidato: 'Candidato'):
-        self.controlador_chapa.add_candidato(candidato)
+        self.controlador_chapa.add_candidato_chapa(candidato)
 
     def delete_candidato_chapa(self, candidato: 'Candidato'):
-        self.controlador_chapa.remove_candidato(candidato)
+        self.controlador_chapa.remove_candidato_chapa(candidato)
+
+    def post_candidato_eleitores(self, candidato: 'Candidato'):
+        self.controlador_eleitor.add_candidato_eleitores(candidato)
+
+    def delete_candidato_eleitores(self, candidato: 'Candidato'):
+        self.controlador_eleitor.remove_candidato_eleitores(candidato)
 
     def vota(self):
         try:
@@ -115,11 +121,11 @@ class ControladorUrna(AbstractControlador):
                             candidato = self.fetch_candidato(voto['num_candidato'], cargo)
 
                             if candidato:
-                                self.urna.votos.append(Voto(voto['num_candidato'], cargo))
+                                self.inclui_voto(Voto(voto['num_candidato'], cargo, eleitor.tipo_eleitor))
                             else:
-                                self.urna.votos.append(Voto(99, cargo))
+                                self.inclui_voto(Voto(99, cargo, eleitor.tipo_eleitor))
                         else:
-                            self.urna.votos.append(Voto(0, cargo))
+                            self.inclui_voto(Voto(0, cargo, eleitor.tipo_eleitor))
                         break            
                     elif voto['confirma'] == 2:
                         voto = self.tela_urna.get_voto(cargo.value[1])
@@ -128,8 +134,35 @@ class ControladorUrna(AbstractControlador):
         except Exception as e:
             self.tela_urna.alert(e)
 
+    def inclui_voto(self, voto: Voto):
+        self.urna.votos.append(voto)
+
     def gera_relatorio_votos(self):
-        pass
+        candidatos = self.controlador_candidato.separa_candidatos_por_cargo()
+
+        relatorio = {cargo.name.lower(): {candidato['numero']: {tipo.name.lower(): 0 for tipo in TipoEleitor} for candidato in candidatos[cargo.name.lower()]} for cargo in CargoCandidato}
+        relatorio['num_votos'] = len(self.urna.votos)
+        relatorio['brancos'] = 0
+        relatorio['nulos'] = 0
+
+        for voto in self.urna.votos:
+            if voto.num_candidato == 0:
+                relatorio['brancos'] += 1
+                continue
+            if voto.num_candidato == 99:
+                relatorio['nulos'] += 1
+                continue
+
+            relatorio[voto.cargo_candidato.name.lower()][voto.num_candidato][voto.tipo_eleitor.name.lower()] += 1
+
+        self.tela_urna.exibe_relatorio(relatorio)
+
+        # relatorio = {
+        #     'reitor': {candidato['numero']: {'aluno': 0, 'professor': 0, 'tecnico_administrativo': 0} for candidato in candidatos['reitores']},
+        #     'pro_reitor_extensao': {candidato['numero']: {'aluno': 0, 'professor': 0, 'tecnico_administrativo': 0} for candidato in candidatos['pro_reitores_extensao']},
+        #     'pro_reitor_graduacao': {candidato['numero']: {'aluno': 0, 'professor': 0, 'tecnico_administrativo': 0} for candidato in candidatos['pro_reitores_graduacao']},
+        #     'pro_reitor_pesquisa': {candidato['numero']: {'aluno': 0, 'professor': 0, 'tecnico_administrativo': 0} for candidato in candidatos['pro_reitores_pesquisa']}
+        # }
 
     def gera_resultado(self):
         pass
