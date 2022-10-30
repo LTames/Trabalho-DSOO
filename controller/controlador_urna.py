@@ -85,8 +85,8 @@ class ControladorUrna(AbstractControlador):
     def delete_candidato_chapa(self, candidato: 'Candidato'):
         self.controlador_chapa.remove_candidato(candidato)
 
-    def fetch_eleitor(self):
-        return self.controlador_eleitor.seleciona_eleitor()
+    def fetch_eleitor(self, cpf_eleitor: str = None):
+        return self.controlador_eleitor.seleciona_eleitor(cpf_eleitor)
 
     def add_eleitor(self):
         eleitor = self.fetch_eleitor()
@@ -98,6 +98,9 @@ class ControladorUrna(AbstractControlador):
         except Exception as e:
             self.tela_urna.alert(e)
 
+    def fetch_candidato(self, num_candidato: int = None):
+        return self.controlador_candidato.seleciona_candidato(num_candidato)
+
     def vota(self):
         for cargo in CargoCandidato:
             voto = self.tela_urna.get_voto(cargo.value[1])
@@ -105,9 +108,11 @@ class ControladorUrna(AbstractControlador):
             while True:
                 if voto['confirma'] == 1:
                     if voto['num_candidato'] is not None:
-                        candidato = self.fetch_candidato
-
-                        self.urna.votos.append(Voto(voto['num_candidato'], cargo))
+                        candidato = self.fetch_candidato(voto['num_candidato'])
+                        if candidato:
+                            self.urna.votos.append(Voto(99, cargo))
+                        else:
+                            self.urna.votos.append(Voto(voto['num_candidato'], cargo))
                     else:
                         self.urna.votos.append(Voto(0, cargo))
                     break                        
