@@ -24,7 +24,7 @@ class ControladorEleitor(AbstractControlador):
     def seleciona_eleitor(self, cpf: str = None):
         try:
             if not cpf:
-                num_candidato = self.tela_eleitor.get_cpf_eleitor()
+                cpf = self.tela_eleitor.get_cpf_eleitor()
             for eleitor in self.eleitores:
                 if eleitor.cpf == cpf:
                     return eleitor

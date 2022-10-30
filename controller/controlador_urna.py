@@ -1,7 +1,3 @@
-from logging import exception
-
-from Trabalho-DSOO.model import candidato
-
 from controller.controlador_candidato import ControladorCandidato, CargoCandidato
 from controller.controlador_chapa import ControladorChapa
 from controller.controlador_eleitor import ControladorEleitor
