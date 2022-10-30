@@ -1,3 +1,4 @@
+from logging import exception
 from controller.controlador_candidato import ControladorCandidato
 from controller.controlador_chapa import ControladorChapa
 from controller.controlador_eleitor import ControladorEleitor
@@ -5,6 +6,9 @@ from model.urna import Urna
 from view.tela_urna import TelaUrna
 from abstracts.abstract_controlador import AbstractControlador
 from sys import exit
+from exceptions.chapa_nao_cadastrada import ChapaNaoCadastradaException
+from exceptions.urna_nao_configurada import UrnaNaoConfiguradaException
+from exceptions.voto_multiplo import VotoMultiploEXception
 
 
 class ControladorUrna(AbstractControlador):
@@ -47,17 +51,27 @@ class ControladorUrna(AbstractControlador):
         self.urna.configurada = True
 
     def cadastra_candidato(self):
-        if not self.controlador_chapa.chapas:
-           self.controlador_candidato.tela_candidato.alert("Cadastre uma chapa primeiro!")
-           return
+        try:
+            if not self.controlador_chapa.chapas:
+                raise ChapaNaoCadastradaException()
+            if not self.urna.configurada:
+                raise UrnaNaoConfiguradaException()
 
-        self.controlador_candidato.inicia_tela()
+            self.controlador_candidato.inicia_tela()
+        except Exception as e:
+            self.tela_urna.alert(e)
 
     def cadastra_chapa(self):
         self.controlador_chapa.inicia_tela()
 
     def cadastra_eleitor(self):
-        self.controlador_eleitor.inicia_tela()
+        try:
+            if not self.urna.configurada:
+                raise UrnaNaoConfiguradaException()
+
+            self.controlador_eleitor.inicia_tela()
+        except Exception as e:
+            self.tela_urna.alert(e)
 
     def fetch_chapa(self):
         return self.controlador_chapa.seleciona_chapa()
@@ -68,7 +82,24 @@ class ControladorUrna(AbstractControlador):
     def delete_candidato_chapa(self, candidato: 'Candidato'):
         self.controlador_chapa.remove_candidato(candidato)
 
+    def fetch_eleitor(self):
+        return self.controlador_eleitor.seleciona_eleitor()
+
+    def add_eleitor(self):
+        eleitor = self.fetch_eleitor()
+        try:
+            if eleitor in self.urna.eleitores:
+                raise VotoMultiploEXception()
+
+            self.urna.eleitores.append(eleitor)
+        except Exception as e:
+            self.tela_urna.alert(e)
+
     def vota(self):
+        candidatos = self.controlador_candidato.separa_candidatos_por_cargo()
+        votos = self.tela_urna.get_dados_votos(candidatos)
+
+    def inclui_votos(self):
         pass
 
     def gera_relatorio_votos(self):
@@ -78,12 +109,6 @@ class ControladorUrna(AbstractControlador):
         pass
 
     def corrige_utlimo_voto(self):
-        pass
-
-    def inclui_eleitor(self):
-        pass
-
-    def inclui_votos(self):
         pass
 
     def inicia_sessao(self):

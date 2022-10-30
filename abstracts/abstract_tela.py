@@ -8,9 +8,9 @@ class AbstractTela(ABC):
         pass
 
     def alert(self, msg: str) -> None:
-        print(f"{'=' * 8} {msg.upper()} {'=' * 8}")
+        print(f"{'=' * 8} {msg} {'=' * 8}")
 
-    def get_int_input(self, input_msg: str, max_int: int = None):
+    def get_int_input(self, input_msg: str, min_int: int,max_int: int = None):
         while True:
             try:
                 entrada = int(input(input_msg))

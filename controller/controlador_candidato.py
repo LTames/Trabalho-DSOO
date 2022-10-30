@@ -87,7 +87,6 @@ class ControladorCandidato(AbstractControlador):
         candidato.cargo = CargoCandidato(dados_atualizados["cargo"])
 
         self.controlador_urna.post_candidato_chapa(candidato)
-        
 
     def lista_candidatos(self) -> None:
         if not self.candidatos:
@@ -102,6 +101,27 @@ class ControladorCandidato(AbstractControlador):
                                                  "numero": candidato.numero,
                                                  "chapa": candidato.chapa.nome_chapa,
                                                  "cargo": candidato.cargo.value[1]})
+
+    def separa_candidatos_por_cargo(self):
+        reitores = []
+        pro_reitores_extensao = []
+        pro_reitores_graduacao = []
+        pro_reitores_pesquisa = []
+        
+        for candidato in self.candidatos:
+            dados_candidato = {'nome': candidato.nome, 'numero': candidato.numero, 'chapa': candidato.chapa.nome_chapa}
+            
+            match candidato.cargo:
+                case CargoCandidato.REITOR:
+                    reitores.append(dados_candidato)
+                case CargoCandidato.PRO_REITOR_EXTENSAO:
+                    pro_reitores_extensao.append(dados_candidato)
+                case CargoCandidato.PRO_REITOR_GRADUACAO:
+                    pro_reitores_graduacao.append(dados_candidato)                
+                case CargoCandidato.PRO_REITOR_PESQUISA:
+                    pro_reitores_pesquisa.append(dados_candidato)
+
+        return {'reitores': reitores, 'pro_reitores_extensao': pro_reitores_extensao, 'pro_reitores_graduacao': pro_reitores_graduacao, 'pro_reitores_pesquisa': pro_reitores_pesquisa}
 
     def inicia_tela(self) -> None:
         acoes = {1: self.altera_candidato, 2: self.adiciona_candidato,
