@@ -1,5 +1,5 @@
 from datetime import datetime
-from cargo_candidato import CargoCandidato
+from model.cargo_candidato import CargoCandidato
 
 
 class Voto():

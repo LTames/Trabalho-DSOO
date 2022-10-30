@@ -8,6 +8,7 @@ from sys import exit
 from exceptions.chapa_nao_cadastrada import ChapaNaoCadastradaException
 from exceptions.urna_nao_configurada import UrnaNaoConfiguradaException
 from exceptions.voto_multiplo import VotoMultiploEXception
+from exceptions.candidato_nao_cadastrado import CandidatoNaoCadastradoException
 
 
 class ControladorUrna(AbstractControlador):
@@ -75,45 +76,57 @@ class ControladorUrna(AbstractControlador):
     def fetch_chapa(self):
         return self.controlador_chapa.seleciona_chapa()
 
+    def fetch_eleitor(self, cpf_eleitor: str = None):
+        return self.controlador_eleitor.seleciona_eleitor(cpf_eleitor)
+
+    def fetch_candidato(self, num_candidato: int = None, cargo: CargoCandidato = None):
+        return self.controlador_candidato.seleciona_candidato(num_candidato, cargo)
+
     def post_candidato_chapa(self, candidato: 'Candidato'):
         self.controlador_chapa.add_candidato(candidato)
 
     def delete_candidato_chapa(self, candidato: 'Candidato'):
         self.controlador_chapa.remove_candidato(candidato)
 
-    def fetch_eleitor(self, cpf_eleitor: str = None):
-        return self.controlador_eleitor.seleciona_eleitor(cpf_eleitor)
-
-    def add_eleitor(self):
-        eleitor = self.fetch_eleitor()
+    def vota(self):
         try:
-            if eleitor in self.urna.eleitores:
-                raise VotoMultiploEXception()
+            if not self.urna.configurada:
+                raise UrnaNaoConfiguradaException
 
-            self.urna.eleitores.append(eleitor)
+            if not self.controlador_chapa.chapas:
+                raise ChapaNaoCadastradaException
+
+            if not self.controlador_candidato.candidatos:
+                raise CandidatoNaoCadastradoException
+
+            eleitor = self.fetch_eleitor()
+            if not eleitor:
+                return
+            if eleitor in self.urna.eleitores:
+                raise VotoMultiploEXception
+            self.urna.eleitores.append(eleitor) 
+
+            for cargo in CargoCandidato:
+                voto = self.tela_urna.get_voto(cargo.value[1])
+                
+                while True:
+                    if voto['confirma'] == 1:
+                        if voto['num_candidato'] is not None:
+                            candidato = self.fetch_candidato(voto['num_candidato'], cargo)
+
+                            if candidato:
+                                self.urna.votos.append(Voto(voto['num_candidato'], cargo))
+                            else:
+                                self.urna.votos.append(Voto(99, cargo))
+                        else:
+                            self.urna.votos.append(Voto(0, cargo))
+                        break            
+                    elif voto['confirma'] == 2:
+                        voto = self.tela_urna.get_voto(cargo.value[1])
+
+            self.urna.contador_votos += 1
         except Exception as e:
             self.tela_urna.alert(e)
-
-    def fetch_candidato(self, num_candidato: int = None):
-        return self.controlador_candidato.seleciona_candidato(num_candidato)
-
-    def vota(self):
-        for cargo in CargoCandidato:
-            voto = self.tela_urna.get_voto(cargo.value[1])
-
-            while True:
-                if voto['confirma'] == 1:
-                    if voto['num_candidato'] is not None:
-                        candidato = self.fetch_candidato(voto['num_candidato'])
-                        if candidato:
-                            self.urna.votos.append(Voto(99, cargo))
-                        else:
-                            self.urna.votos.append(Voto(voto['num_candidato'], cargo))
-                    else:
-                        self.urna.votos.append(Voto(0, cargo))
-                    break                        
-                elif voto['confirma'] == 2:
-                    voto = self.tela_urna.get_voto(cargo.value[1])
 
     def gera_relatorio_votos(self):
         pass
@@ -135,4 +148,8 @@ class ControladorUrna(AbstractControlador):
             7: exit}
 
         while True:
+            len_eleitores = len(self.controlador_eleitor.eleitores)
+            if self.urna.contador_votos == len_eleitores and len_eleitores:
+                self.gera_resultado()
+
             acoes[self.tela_urna.exibe_opcoes()]()

@@ -21,17 +21,20 @@ class ControladorCandidato(AbstractControlador):
     def controlador_urna(self):
         return self.__controlador_urna
 
-    def seleciona_candidato(self, num_candidato: int = None):
+    def seleciona_candidato(self, num_candidato: int = None, cargo: CargoCandidato = None):
         try:
             if not num_candidato:
                 num_candidato = self.tela_candidato.get_num_candidato()
             for candidato in self.candidatos:
-                if candidato.numero == num_candidato:
+                if cargo is not None:
+                    if candidato.numero == num_candidato and candidato.cargo == cargo:
+                        return candidato
+                elif candidato.numero == num_candidato:
                     return candidato
             raise ValueError
         except ValueError:
             self.tela_candidato.alert(
-                "Candidato não existente. Verifique seu número e tente novamente")
+                "Candidato não existente.")
 
     def adiciona_candidato(self):
         if len(self.candidatos) == self.controlador_urna.urna.max_eleitores: 

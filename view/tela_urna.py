@@ -34,7 +34,8 @@ class TelaUrna(AbstractTela):
                 "max_candidatos": max_candidatos, "turno": turno}
 
     def get_voto(self, cargo: str):
-        num_candidato = self.get_int_input(f'Digite o número do candidato a {cargo}', 98, True)
+        print(f'Vote para o candidato a {cargo}')
+        num_candidato = self.get_int_input(f'Número do candidato: ', 98, True)
         
         print('1 - Sim')
         print('2 - Corrige')
