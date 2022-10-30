@@ -18,8 +18,8 @@ class TelaUrna(AbstractTela):
 
     def exibe_relatorio(self, dados_relatorio: dict):
         def exibe_votos(cargo: str, cargo_display: str):
+            print(f'===== {cargo_display.title()} =====')
             for num_candidato, votos in dados_relatorio[cargo].items():
-                print(f'===== {cargo_display.title()} =====')
                 print(f'N° Candidato: {num_candidato} | Alunos: {votos["aluno"]} | Professores: {votos["professor"]} | Técnicos Administrativos: {votos["tecnico_administrativo"]}')
                 print('')
 
