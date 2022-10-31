@@ -178,11 +178,11 @@ class ControladorUrna(AbstractControlador):
             soma_votos_segundo = 0
             soma_votos_total = 0
 
-            print(cargo_candidato)
-            print(relatorio[cargo_candidato])
-            for num_candidato, votos in relatorio[cargo_candidato].items():
-                print(num_candidato)
-                print(votos)
+            apuracao = relatorio[cargo_candidato]
+            if isinstance(apuracao, int):
+                continue
+    
+            for num_candidato, votos in apuracao.items():
                 soma_votos = votos['aluno'] * 0.0775 + votos['professor'] * 1.24 + votos['tecnico_administrativo']
                 soma_votos_total += soma_votos
 
@@ -192,9 +192,9 @@ class ControladorUrna(AbstractControlador):
                 elif soma_votos > soma_votos_segundo:
                     num_candidato_segundo, soma_votos_segundo = num_candidato, soma_votos
 
-            perc_primeiro = f'{(soma_votos_primeiro / soma_votos_total) * 100:2f}%'
-            perc_segundo = f'{(soma_votos_segundo / soma_votos_total) * 100:2f}%'
+            perc_primeiro = f'{(soma_votos_primeiro / soma_votos_total) * 100:2f}%'            
             if soma_votos_primeiro / soma_votos_total <= 0.5:
+                perc_segundo = f'{(soma_votos_segundo / soma_votos_total) * 100:2f}%'
                 resultado[cargo_candidato] = {num_candidato_primeiro: perc_primeiro, num_candidato_segundo: perc_segundo}
             else:
                 resultado[cargo_candidato] = {num_candidato_primeiro: perc_primeiro}
@@ -218,5 +218,6 @@ class ControladorUrna(AbstractControlador):
             len_eleitores = len(self.controlador_eleitor.eleitores)
             if self.urna.contador_votos == len_eleitores and len_eleitores:
                 self.gera_resultado()
+                exit()
 
             acoes[self.tela_urna.exibe_opcoes()]()
