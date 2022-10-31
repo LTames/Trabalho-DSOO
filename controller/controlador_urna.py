@@ -137,7 +137,7 @@ class ControladorUrna(AbstractControlador):
     def inclui_voto(self, voto: Voto):
         self.urna.votos.append(voto)
 
-    def gera_relatorio_votos(self):
+    def gera_relatorio_votos(self, show_relatorio: bool = True):
         candidatos = self.controlador_candidato.separa_candidatos_por_cargo()
 
         relatorio = {cargo.name.lower(): {candidato['numero']: {tipo.name.lower(): 0 for tipo in TipoEleitor} for candidato in candidatos[cargo.name.lower()]} for cargo in CargoCandidato}
@@ -155,17 +155,41 @@ class ControladorUrna(AbstractControlador):
 
             relatorio[voto.cargo_candidato.name.lower()][voto.num_candidato][voto.tipo_eleitor.name.lower()] += 1
 
+        if not show_relatorio:
+            return relatorio
         self.tela_urna.exibe_relatorio(relatorio)
 
-        # relatorio = {
-        #     'reitor': {candidato['numero']: {'aluno': 0, 'professor': 0, 'tecnico_administrativo': 0} for candidato in candidatos['reitores']},
-        #     'pro_reitor_extensao': {candidato['numero']: {'aluno': 0, 'professor': 0, 'tecnico_administrativo': 0} for candidato in candidatos['pro_reitores_extensao']},
-        #     'pro_reitor_graduacao': {candidato['numero']: {'aluno': 0, 'professor': 0, 'tecnico_administrativo': 0} for candidato in candidatos['pro_reitores_graduacao']},
-        #     'pro_reitor_pesquisa': {candidato['numero']: {'aluno': 0, 'professor': 0, 'tecnico_administrativo': 0} for candidato in candidatos['pro_reitores_pesquisa']}
-        # }
-
     def gera_resultado(self):
-        pass
+        relatorio = self.gera_relatorio_votos(False)
+
+        num_candidato_primeiro = None
+        soma_votos_primeiro = 0
+        num_candidato_segundo = None
+        soma_votos_segundo = 0
+        resultado = {}
+
+        for cargo_candidato in relatorio.keys():
+            soma_votos_total = 0
+    
+            for num_candidato, votos in relatorio[cargo_candidato]:
+                soma_votos = votos['aluno'] * 0.0775 + votos['professor'] * 1.24 + votos['tecnico_administrativo']
+                soma_votos_total += soma_votos
+
+                if soma_votos > soma_votos_primeiro:
+                    num_candidato_segundo, soma_votos_segundo = num_candidato_primeiro, soma_votos_primeiro
+                    num_candidato_primeiro, soma_votos_primeiro = num_candidato, soma_votos
+                elif soma_votos > soma_votos_segundo:
+                    num_candidato_segundo, soma_votos_segundo = num_candidato, soma_votos
+
+            if soma_votos_primeiro / soma_votos_total <= 0.5:
+                perc_primeiro = f'{(soma_votos_primeiro / soma_votos_total) * 100:2f}%'
+                perc_segundo = f'{(soma_votos_segundo / soma_votos_total) * 100:2f}%'
+                
+                resultado[cargo_candidato] = {num_candidato_primeiro: perc_primeiro, num_candidato_segundo: perc_segundo}
+            else:
+                resultado[cargo_candidato] = {num_candidato_primeiro: perc_primeiro}
+
+        self.tela_urna.exibe_resultado(resultado)
 
     def inicia_sessao(self):
         self.inicia_tela()

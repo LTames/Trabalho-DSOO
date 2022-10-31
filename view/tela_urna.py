@@ -21,17 +21,27 @@ class TelaUrna(AbstractTela):
             print(f'===== {cargo_display.title()} =====')
             for num_candidato, votos in dados_relatorio[cargo].items():
                 print(f'N° Candidato: {num_candidato} | Alunos: {votos["aluno"]} | Professores: {votos["professor"]} | Técnicos Administrativos: {votos["tecnico_administrativo"]}')
-                print('')
+            print('')
 
-        print('--- Relatório Preliminar Eleições 2022 ---')
+        print('--- Relatório Eleições 2022 ---')
         exibe_votos('reitor', 'Reitor')
         exibe_votos('pro_reitor_extensao', 'Pró-Reitor de Extensão')
         exibe_votos('pro_reitor_graduacao', 'Pró-Reitor de Graduação')
         exibe_votos('pro_reitor_pesquisa', 'Pró-Reitor de Pesquisa')
         print(f"Brancos: {dados_relatorio['brancos']} | Nulos: {dados_relatorio['nulos']} | Total de Votos: {dados_relatorio['num_votos']}")
 
-    def exibe_resultado(self, dados_resultado):
-        pass
+    def exibe_resultado(self, dados_resultado: dict):
+        def exibe_apuracao(cargo: str, cargo_display: str):
+            print(f'===== {cargo_display.title()} =====')
+            for num_candidato, percentual in dados_resultado[cargo].items():
+                print(f'N° Candidato: {num_candidato} - {percentual}')
+            print('')
+
+        print('--- Resultado Eleições 2022 ---')
+        exibe_apuracao('reitor', 'Reitor')
+        exibe_apuracao('pro_reitor_extensao', 'Pró-Reitor de Extensão')
+        exibe_apuracao('pro_reitor_graduacao', 'Pró-Reitor de Graduação')
+        exibe_apuracao('pro_reitor_pesquisa', 'Pró-Reitor de Pesquisa')
 
     def get_dados_configuracao(self):
         print(f'--- Configuração da Urna ---')
