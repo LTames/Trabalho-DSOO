@@ -5,6 +5,8 @@ from model.eleitor import Eleitor,TipoEleitor
 from exceptions.max_eleitores import MaxEleitoresException
 from exceptions.eleitor_inexistente import EleitorInexistenteException
 from exceptions.eleitor_ja_cadastrado import EleitorJaCadastradoException
+
+
 class ControladorEleitor(AbstractControlador):
     def __init__(self, controlador_urna) -> None:
         self.__controlador_urna = controlador_urna

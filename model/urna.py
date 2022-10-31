@@ -10,6 +10,7 @@ class Urna():
         self.__turno = None
         self.__configurada = False
         self.__contador_votos = 0
+        self.__votacao_iniciada = False
 
     @property
     def votos(self) -> list['Voto']:
@@ -39,6 +40,10 @@ class Urna():
     def contador_votos(self) -> int:
         return self.__contador_votos
 
+    @property
+    def votacao_iniciada(self) -> bool:
+        return self.__votacao_iniciada
+
     @votos.setter
     def votos(self, votos) -> None:
         self.__votos = votos
@@ -66,3 +71,8 @@ class Urna():
     @contador_votos.setter
     def contador_votos(self, contador_votos) -> None:
         self.__contador_votos = contador_votos
+
+    @votacao_iniciada.setter
+    def votacao_iniciada(self, votacao_iniciada) -> None:
+        self.__votacao_iniciada = votacao_iniciada
+

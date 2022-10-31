@@ -9,7 +9,9 @@ from exceptions.chapa_nao_cadastrada import ChapaNaoCadastradaException
 from exceptions.urna_nao_configurada import UrnaNaoConfiguradaException
 from exceptions.voto_multiplo import VotoMultiploEXception
 from exceptions.candidato_nao_cadastrado import CandidatoNaoCadastradoException
-
+from exceptions.missing_candidatos import MissingCandidatosException
+from exceptions.missing_eleitores import MissingEleitoresException
+from exceptions.votacao_iniciada import VotacaoIniciadaException
 
 class ControladorUrna(AbstractControlador):
     def __init__(self) -> None:
@@ -56,18 +58,25 @@ class ControladorUrna(AbstractControlador):
                 raise ChapaNaoCadastradaException
             if not self.urna.configurada:
                 raise UrnaNaoConfiguradaException
+            if self.urna.votacao_iniciada:
+                raise VotacaoIniciadaException
 
             self.controlador_candidato.inicia_tela()
         except Exception as e:
             self.tela_urna.alert(e)
 
     def cadastra_chapa(self):
+        if self.urna.votacao_iniciada:
+            raise VotacaoIniciadaException
+
         self.controlador_chapa.inicia_tela()
 
     def cadastra_eleitor(self):
         try:
             if not self.urna.configurada:
                 raise UrnaNaoConfiguradaException
+            if self.urna.votacao_iniciada:
+                raise VotacaoIniciadaException
 
             self.controlador_eleitor.inicia_tela()
         except Exception as e:
@@ -98,12 +107,10 @@ class ControladorUrna(AbstractControlador):
         try:
             if not self.urna.configurada:
                 raise UrnaNaoConfiguradaException
-
-            if not self.controlador_chapa.chapas:
-                raise ChapaNaoCadastradaException
-
-            if not self.controlador_candidato.candidatos:
-                raise CandidatoNaoCadastradoException
+            if self.urna.max_candidatos > len(self.controlador_candidato.candidatos):
+                raise MissingCandidatosException
+            if self.urna.max_eleitores > len(self.controlador_eleitor.eleitores):
+                raise MissingEleitoresException
 
             eleitor = self.fetch_eleitor()
             if not eleitor:
@@ -131,6 +138,7 @@ class ControladorUrna(AbstractControlador):
                         voto = self.tela_urna.get_voto(cargo.value[1])
 
             self.urna.contador_votos += 1
+            self.urna.votacao_iniciada = True
         except Exception as e:
             self.tela_urna.alert(e)
 
@@ -161,17 +169,20 @@ class ControladorUrna(AbstractControlador):
 
     def gera_resultado(self):
         relatorio = self.gera_relatorio_votos(False)
-
-        num_candidato_primeiro = None
-        soma_votos_primeiro = 0
-        num_candidato_segundo = None
-        soma_votos_segundo = 0
         resultado = {}
 
         for cargo_candidato in relatorio.keys():
+            num_candidato_primeiro = None
+            soma_votos_primeiro = 0
+            num_candidato_segundo = None
+            soma_votos_segundo = 0
             soma_votos_total = 0
-    
-            for num_candidato, votos in relatorio[cargo_candidato]:
+
+            print(cargo_candidato)
+            print(relatorio[cargo_candidato])
+            for num_candidato, votos in relatorio[cargo_candidato].items():
+                print(num_candidato)
+                print(votos)
                 soma_votos = votos['aluno'] * 0.0775 + votos['professor'] * 1.24 + votos['tecnico_administrativo']
                 soma_votos_total += soma_votos
 
@@ -181,10 +192,9 @@ class ControladorUrna(AbstractControlador):
                 elif soma_votos > soma_votos_segundo:
                     num_candidato_segundo, soma_votos_segundo = num_candidato, soma_votos
 
+            perc_primeiro = f'{(soma_votos_primeiro / soma_votos_total) * 100:2f}%'
+            perc_segundo = f'{(soma_votos_segundo / soma_votos_total) * 100:2f}%'
             if soma_votos_primeiro / soma_votos_total <= 0.5:
-                perc_primeiro = f'{(soma_votos_primeiro / soma_votos_total) * 100:2f}%'
-                perc_segundo = f'{(soma_votos_segundo / soma_votos_total) * 100:2f}%'
-                
                 resultado[cargo_candidato] = {num_candidato_primeiro: perc_primeiro, num_candidato_segundo: perc_segundo}
             else:
                 resultado[cargo_candidato] = {num_candidato_primeiro: perc_primeiro}
