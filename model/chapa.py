@@ -1,6 +1,3 @@
-from model.candidato import Candidato
-
-
 class Chapa():
     def __init__(self, num_chapa: int, nome_chapa: str) -> None:
         self.__num_chapa = num_chapa

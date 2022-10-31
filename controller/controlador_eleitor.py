@@ -1,7 +1,6 @@
-from model.tipo_eleitor import TipoEleitor
 from abstracts.abstract_controlador import AbstractControlador
 from view.tela_eleitor import TelaEleitor
-from model.eleitor import Eleitor,TipoEleitor
+from model.eleitor import Eleitor, TipoEleitor
 from exceptions.max_eleitores import MaxEleitoresException
 from exceptions.eleitor_inexistente import EleitorInexistenteException
 from exceptions.eleitor_ja_cadastrado import EleitorJaCadastradoException
@@ -35,11 +34,11 @@ class ControladorEleitor(AbstractControlador):
             raise EleitorInexistenteException
         except Exception as e:
             self.tela_eleitor.alert(e)
-    
+
     def adiciona_eleitor(self):
-        if len(self.eleitores) == self.controlador_urna.urna.max_eleitores: 
+        if len(self.eleitores) == self.controlador_urna.urna.max_eleitores:
             raise MaxEleitoresException
-        
+
         try:
             dados_eleitor = self.tela_eleitor.get_dados_eleitor()
             for eleitor in self.eleitores:
@@ -51,7 +50,7 @@ class ControladorEleitor(AbstractControlador):
                                           dados_eleitor["email"],
                                           dados_eleitor["endereco"],
                                           TipoEleitor(dados_eleitor["tipo_eleitor"])))
-                                          
+
         except Exception as e:
             self.tela_eleitor.alert(e)
 
@@ -63,7 +62,7 @@ class ControladorEleitor(AbstractControlador):
         if not eleitor:
             return
         self.eleitores.remove(eleitor)
-    
+
     def altera_eleitor(self) -> None:
         if not self.eleitores:
             self.tela_eleitor.alert('Não há eleitores cadastrados')
@@ -71,7 +70,7 @@ class ControladorEleitor(AbstractControlador):
         eleitor = self.seleciona_eleitor()
         if not eleitor:
             return
-        
+
         dados_atualizados = self.tela_eleitor.get_dados_eleitor()
         eleitor.cpf = dados_atualizados["cpf"]
         eleitor.nome = dados_atualizados["nome"]

@@ -75,4 +75,3 @@ class Urna():
     @votacao_iniciada.setter
     def votacao_iniciada(self, votacao_iniciada) -> None:
         self.__votacao_iniciada = votacao_iniciada
-

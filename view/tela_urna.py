@@ -20,7 +20,8 @@ class TelaUrna(AbstractTela):
         def exibe_votos(cargo: str, cargo_display: str):
             print(f'===== {cargo_display.title()} =====')
             for num_candidato, votos in dados_relatorio[cargo].items():
-                print(f'N° Candidato: {num_candidato} | Alunos: {votos["aluno"]} | Professores: {votos["professor"]} | Técnicos Administrativos: {votos["tecnico_administrativo"]}')
+                print(
+                    f'N° Candidato: {num_candidato} | Alunos: {votos["aluno"]} | Professores: {votos["professor"]} | Técnicos Administrativos: {votos["tecnico_administrativo"]}')
             print('')
 
         print('--- Relatório Eleições 2022 ---')
@@ -28,7 +29,8 @@ class TelaUrna(AbstractTela):
         exibe_votos('pro_reitor_extensao', 'Pró-Reitor de Extensão')
         exibe_votos('pro_reitor_graduacao', 'Pró-Reitor de Graduação')
         exibe_votos('pro_reitor_pesquisa', 'Pró-Reitor de Pesquisa')
-        print(f"Brancos: {dados_relatorio['brancos']} | Nulos: {dados_relatorio['nulos']} | Total de Votos: {dados_relatorio['num_votos']}")
+        print(
+            f"Brancos: {dados_relatorio['brancos']} | Nulos: {dados_relatorio['nulos']} | Total de Votos: {dados_relatorio['num_votos']}")
 
     def exibe_resultado(self, dados_resultado: dict):
         def exibe_apuracao(cargo: str, cargo_display: str):
@@ -57,7 +59,7 @@ class TelaUrna(AbstractTela):
     def get_voto(self, cargo: str):
         print(f'Vote para o candidato a {cargo}')
         num_candidato = self.get_int_input(f'Número do candidato: ', 98, True)
-        
+
         print('1 - Sim')
         print('2 - Corrige')
         confirma = self.get_int_input('Confirma ?: ', 2)

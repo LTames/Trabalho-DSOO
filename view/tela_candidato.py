@@ -41,8 +41,6 @@ class TelaCandidato(AbstractTela):
                 "tipo_eleitor": tipo_eleitor,
                 "cargo": cargo}
 
-
-
     def get_num_candidato(self) -> int:
         num = self.get_int_input("Digite o número do candidato: ")
         return num

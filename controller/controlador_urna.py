@@ -8,7 +8,6 @@ from sys import exit
 from exceptions.chapa_nao_cadastrada import ChapaNaoCadastradaException
 from exceptions.urna_nao_configurada import UrnaNaoConfiguradaException
 from exceptions.voto_multiplo import VotoMultiploEXception
-from exceptions.candidato_nao_cadastrado import CandidatoNaoCadastradoException
 from exceptions.missing_candidatos import MissingCandidatosException
 from exceptions.missing_eleitores import MissingEleitoresException
 from exceptions.votacao_iniciada import VotacaoIniciadaException
@@ -149,6 +148,7 @@ class ControladorUrna(AbstractControlador):
         candidatos = self.controlador_candidato.separa_candidatos_por_cargo()
 
         relatorio = {cargo.name.lower(): {candidato['numero']: {tipo.name.lower(): 0 for tipo in TipoEleitor} for candidato in candidatos[cargo.name.lower()]} for cargo in CargoCandidato}
+        
         relatorio['num_votos'] = len(self.urna.votos)
         relatorio['brancos'] = 0
         relatorio['nulos'] = 0

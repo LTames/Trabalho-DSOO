@@ -1,4 +1,3 @@
-from multiprocessing.sharedctypes import Value
 from abstracts.abstract_controlador import AbstractControlador
 from view.tela_chapa import TelaChapa
 from model.chapa import Chapa
@@ -57,7 +56,7 @@ class ControladorChapa(AbstractControlador):
         chapa = self.seleciona_chapa()
         if not chapa:
             return
-        
+
         dados_atualizados = self.tela_chapa.get_dados_chapa()
         chapa.num_chapa = dados_atualizados["num_chapa"]
         chapa.nome_chapa = dados_atualizados["nome_chapa"]
@@ -67,7 +66,8 @@ class ControladorChapa(AbstractControlador):
             self.tela_chapa.alert('Não há chapas cadastradas')
             return
         for chapa in self.chapas:
-            self.tela_chapa.exibe_chapa({'num_chapa': chapa.num_chapa, 'nome_chapa': chapa.nome_chapa, 'candidatos': chapa.candidatos})
+            self.tela_chapa.exibe_chapa(
+                {'num_chapa': chapa.num_chapa, 'nome_chapa': chapa.nome_chapa, 'candidatos': chapa.candidatos})
 
     def add_candidato_chapa(self, candidato: 'Candidato'):
         for chapa in self.chapas:

@@ -25,7 +25,7 @@ class Voto():
     @cargo_candidato.setter
     def cargo_candidato(self, cargo_candidato) -> None:
         self.__cargo_candidato = cargo_candidato
-    
+
     @property
     def tipo_eleitor(self) -> TipoEleitor:
         return self.__tipo_eleitor
@@ -41,4 +41,3 @@ class Voto():
     @horario_votacao.setter
     def horario_votacao(self, horario_votacao) -> None:
         self.__horario_votacao = horario_votacao
-

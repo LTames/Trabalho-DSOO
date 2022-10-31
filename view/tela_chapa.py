@@ -1,5 +1,6 @@
 from abstracts.abstract_tela import AbstractTela
 
+
 class TelaChapa(AbstractTela):
     def exibe_opcoes(self) -> int:
         print(f'--- CADASTRO DE CHAPA ---')
@@ -15,8 +16,9 @@ class TelaChapa(AbstractTela):
     def exibe_chapa(self, dados_chapa: dict) -> None:
         print(f'--- CHAPA: {dados_chapa["nome_chapa"]} ---')
         print(f'NÚMERO DA CHAPA: {dados_chapa["num_chapa"]}')
-        print(f"CANDIDATOS: {', '.join([candidato.nome.title() for candidato in dados_chapa['candidatos']])}")
-    
+        print(
+            f"CANDIDATOS: {', '.join([candidato.nome.title() for candidato in dados_chapa['candidatos']])}")
+
     def get_dados_chapa(self) -> dict:
         print(f'--- DADOS DA CHAPA ---')
         num_chapa = self.get_int_input("Digite o número da chapa: ", 99)
@@ -31,4 +33,3 @@ class TelaChapa(AbstractTela):
             print(f'{i+1}: {chapas[i].nome_chapa} ({chapas[i].num_chapa})')
         indice_chapa = self.get_int_input("Digite a sua opcão: ", len(chapas))
         return indice_chapa - 1
-        

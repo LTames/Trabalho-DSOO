@@ -39,7 +39,7 @@ class ControladorCandidato(AbstractControlador):
             self.tela_candidato.alert(e)
 
     def adiciona_candidato(self):
-        if len(self.candidatos) == self.controlador_urna.urna.max_candidatos: 
+        if len(self.candidatos) == self.controlador_urna.urna.max_candidatos:
             raise MaxCandidatosException
 
         try:
@@ -50,7 +50,8 @@ class ControladorCandidato(AbstractControlador):
 
             dados_candidato["chapa"] = self.controlador_urna.fetch_chapa()
 
-            candidato = Candidato(dados_candidato["cpf"], dados_candidato["nome"], dados_candidato["email"], dados_candidato["endereco"], TipoEleitor(dados_candidato["tipo_eleitor"]), dados_candidato["numero"], dados_candidato["chapa"], CargoCandidato(dados_candidato["cargo"]))
+            candidato = Candidato(dados_candidato["cpf"], dados_candidato["nome"], dados_candidato["email"], dados_candidato["endereco"], TipoEleitor(
+                dados_candidato["tipo_eleitor"]), dados_candidato["numero"], dados_candidato["chapa"], CargoCandidato(dados_candidato["cargo"]))
 
             self.controlador_urna.post_candidato_chapa(candidato)
             self.controlador_urna.post_candidato_eleitores(candidato)
@@ -66,7 +67,7 @@ class ControladorCandidato(AbstractControlador):
         candidato = self.seleciona_candidato()
         if not candidato:
             return
-        
+
         self.controlador_urna.delete_candidato_chapa(candidato)
         self.controlador_urna.delete_candidato_eleitores(candidato)
         self.candidatos.remove(candidato)
@@ -81,7 +82,7 @@ class ControladorCandidato(AbstractControlador):
 
         dados_atualizados = self.tela_candidato.get_dados_candidato()
         dados_atualizados["chapa"] = self.controlador_urna.fetch_chapa()
-        
+
         if dados_atualizados["chapa"] != candidato.chapa:
             self.controlador_urna.delete_candidato_chapa(candidato)
 
@@ -115,17 +116,18 @@ class ControladorCandidato(AbstractControlador):
         pro_reitores_extensao = []
         pro_reitores_graduacao = []
         pro_reitores_pesquisa = []
-        
+
         for candidato in self.candidatos:
-            dados_candidato = {'nome': candidato.nome, 'numero': candidato.numero}
-            
+            dados_candidato = {'nome': candidato.nome,
+                               'numero': candidato.numero}
+
             match candidato.cargo:
                 case CargoCandidato.REITOR:
                     reitores.append(dados_candidato)
                 case CargoCandidato.PRO_REITOR_EXTENSAO:
                     pro_reitores_extensao.append(dados_candidato)
                 case CargoCandidato.PRO_REITOR_GRADUACAO:
-                    pro_reitores_graduacao.append(dados_candidato)                
+                    pro_reitores_graduacao.append(dados_candidato)
                 case CargoCandidato.PRO_REITOR_PESQUISA:
                     pro_reitores_pesquisa.append(dados_candidato)
 

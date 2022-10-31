@@ -1,4 +1,3 @@
-from model import tipo_eleitor
 from abstracts.abstract_tela import AbstractTela
 
 
