@@ -2,6 +2,9 @@ from abc import ABC, abstractmethod
 
 
 class AbstractControlador(ABC):
+    @abstractmethod
+    def __init__(self):
+        pass
 
     @abstractmethod
     def inicia_tela(self):
